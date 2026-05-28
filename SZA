@@ -476,12 +476,6 @@ if tool then
 Character.Humanoid:EquipTool(tool)
 end
 end
-if _G.AutoExecute then
-local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
-if queue_func then
-queue_func(loadstring(game:HttpGet("https://github.com/recscript/SZA/blob/main/SZA?raw=true"))())
-end
-end
 if _G.AutoSkipWave then
 ReplicatedStorage:WaitForChild("WaveRemotes"):WaitForChild("SkipVote"):FireServer(true)
 end
@@ -522,5 +516,13 @@ end)
 UserInputService.JumpRequest:Connect(function()
 if _G.Infjump and Character:FindFirstChildOfClass("Humanoid") then
 Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+end
+end)
+LocalPlayer.OnTeleport:Connect(function(State)
+if _G.AutoExecute and (State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress) then
+local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
+if queue_func then
+queue_func(loadstring(game:HttpGet("https://github.com/recscript/SZA/blob/main/SZA?raw=true"))())
+end
 end
 end)
