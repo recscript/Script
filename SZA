@@ -313,7 +313,7 @@ Gravity = workspace.Gravity
 
 local VoidShards = workspace:WaitForChild("VoidShards", 5)
 local Zombies_Local = workspace:WaitForChild("Zombies_Local", 5)
-
+local OldPosition = Root.CFrame
 LocalPlayer.Idled:Connect(function()
 if _G.AntiIdle then
 VirtualUser:CaptureController()
@@ -322,7 +322,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.5) do
+while task.wait(0.25) do
 if _G.InstanceKill and Zombies_Local then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local id = tonumber(string.match(v.Name, "%d+$"))
@@ -368,7 +368,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.5) do
+while task.wait(0.25) do
 if _G.KillAura and Character and Character:FindFirstChild("HumanoidRootPart") then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local zroot = v:FindFirstChild("HumanoidRootPart")
@@ -522,7 +522,7 @@ LocalPlayer.OnTeleport:Connect(function(State)
 if _G.AutoExecute and (State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress) then
 local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
 if queue_func then
-queue_func(loadstring(game:HttpGet("https://github.com/recscript/SZA/blob/main/SZA?raw=true"))())
+queue_func([[loadstring(game:HttpGet("https://github.com/recscript/SZA/blob/main/SZA?raw=true"))()]])
 end
 end
 end)
