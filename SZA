@@ -38,7 +38,7 @@ _G.KillAura = v
 end})
 Mobs:NewSlider({
 Title = "Kill Aura Distance",
-Min = 10,Max = 50,
+Min = 10,Max = 200,
 Default = 50,
 Callback = function(v)
 _G.KillAuraDistance = v or 50
@@ -322,7 +322,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.25) do
+while task.wait(0.05) do
 if _G.InstanceKill and Zombies_Local then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local id = tonumber(string.match(v.Name, "%d+$"))
@@ -368,7 +368,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.25) do
+while task.wait(0.05) do
 if _G.KillAura and Character and Character:FindFirstChild("HumanoidRootPart") then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local zroot = v:FindFirstChild("HumanoidRootPart")
