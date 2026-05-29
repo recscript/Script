@@ -314,6 +314,8 @@ Gravity = workspace.Gravity
 local VoidShards = workspace:WaitForChild("VoidShards", 5)
 local Zombies_Local = workspace:WaitForChild("Zombies_Local", 5)
 local OldPosition = Root.CFrame
+local WaveFarm = false
+
 LocalPlayer.Idled:Connect(function()
 if _G.AntiIdle then
 VirtualUser:CaptureController()
@@ -322,7 +324,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.05) do
+while task.wait(0.1) do
 if _G.InstanceKill and Zombies_Local then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local id = tonumber(string.match(v.Name, "%d+$"))
@@ -368,7 +370,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.05) do
+while task.wait(0.1) do
 if _G.KillAura and Character and Character:FindFirstChild("HumanoidRootPart") then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local zroot = v:FindFirstChild("HumanoidRootPart")
@@ -384,6 +386,11 @@ zroot.Position
 }
 ReplicatedStorage:WaitForChild("GunRemotes"):WaitForChild("GunHit"):FireServer(unpack(args))
 ReplicatedStorage:WaitForChild("GunRemotes"):WaitForChild("MeleeSwing"):FireServer("VoidScythe")
+local args = {
+	tool.Name,
+	Root.Position
+}
+game:GetService("ReplicatedStorage"):WaitForChild("GunRemotes"):WaitForChild("GunFire"):FireServer(unpack(args))
 end
 end
 end
@@ -415,12 +422,15 @@ if not _G.WaveFarm then
 OldPosition = Root.CFrame
 end
 if _G.WaveFarm then
-Root.CFrame = CFrame.new(-348.26, 1000.98, -307.78)
+Root.CFrame = CFrame.new(500, 0, -500)
 workspace.Gravity = 0
-task.wait()
+WaveFarm = true
 else
-workspace.Gravity = Default.Gravity
+if WaveFarm then
 Root.CFrame = OldPosition
+workspace.Gravity = Default.Gravity
+WaveFarm = false
+end
 end
 if _G.AutoPlayAgain then
 game:GetService("ReplicatedStorage"):WaitForChild("GameStateRemotes"):WaitForChild("VotePlayAgain"):FireServer()
