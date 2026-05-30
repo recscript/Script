@@ -324,7 +324,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.1) do
+while task.wait(0.25) do
 if _G.InstanceKill and Zombies_Local then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local id = tonumber(string.match(v.Name, "%d+$"))
@@ -370,7 +370,7 @@ end
 end)
 
 spawn(function()
-while task.wait(0.1) do
+while task.wait(0.2) do
 if _G.KillAura and Character and Character:FindFirstChild("HumanoidRootPart") then
 for _,v in ipairs(Zombies_Local:GetChildren()) do
 local zroot = v:FindFirstChild("HumanoidRootPart")
@@ -386,11 +386,6 @@ zroot.Position
 }
 ReplicatedStorage:WaitForChild("GunRemotes"):WaitForChild("GunHit"):FireServer(unpack(args))
 ReplicatedStorage:WaitForChild("GunRemotes"):WaitForChild("MeleeSwing"):FireServer("VoidScythe")
-local args = {
-	tool.Name,
-	Root.Position
-}
-game:GetService("ReplicatedStorage"):WaitForChild("GunRemotes"):WaitForChild("GunFire"):FireServer(unpack(args))
 end
 end
 end
