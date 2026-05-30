@@ -414,7 +414,7 @@ end
 return
 end
 if not _G.WaveFarm then
-OldPosition = Root.CFrame
+local OldPosition = Root.CFrame
 end
 if _G.WaveFarm then
 Root.CFrame = CFrame.new(500, 0, -500)
