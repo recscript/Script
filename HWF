@@ -1,7 +1,3 @@
-workspace.NPC.SpawnBoat.Lucius1 ,2,5,6,7,8
-workspace.NPC.SpawnBoat["Sovereign Isle's So Tam"]
-workspace.NPC.SpawnBoat["Fallout Isle's So Tam"]
-workspace.NPC.SpawnBoat["Battlefield Isle's So Tam"]
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/recscript/Library/refs/heads/main/HWF_UI'))()
 local Window = HWF_CatchFish.Init({Title = "Heavyweight Fishing"})
 local Tabs = {
