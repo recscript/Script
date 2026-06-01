@@ -1,0 +1,50 @@
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/recscript/Library/refs/heads/main/HWF_UI'))()
+local Window = HWF_CatchFish.Init({Title = "Heavyweight Fishing"})
+local Tabs = {
+Main = UI:CreateTab("rbxassetid://10734950309"),
+Misc = UI:CreateTab("rbxassetid://10734950309"),
+Minigame = UI:CreateTab("rbxassetid://10734950309"),
+}
+Tabs.Main:AddDivider({Text = "Teleport"})
+Tabs.Main:AddDropdown({
+    Name = "Select your isle",
+    Options = {"Beginning Isle", "Bamboo Isle", "Fallout Isle", "Sovereign Isle", "Perch Isle", "Frost Isle", "Coconut Isle", "Amber Isle", "Battlefield Isle"},
+    Default = "...",
+    Callback = function(v)
+_G.["Select your isle"] = v
+end})
+Tabs.Main:AddButton({Name = "Teleport to isle", Callback = function()
+end})
+Tabs.Main:AddDivider({Text = "Sell Fish"})
+Tabs.Main:AddDropdown({
+    Name = "Select your sell",
+    Options = {"One", "All"},
+    Default = "...",
+    Callback = function(v)
+_G.["Select your sell"] = v
+end})
+Tabs.Main:AddButton({Name = "Sell fish", Callback = function()
+end})
+Tabs.Main:AddDivider({Text = "Skill"})
+Tabs.Main:AddDropdown({
+    Name = "Select your skill",
+    Options = {"Z", "X", "C", "V"},
+    Default = "...",
+    Callback = function(v)
+_G.["Select your skill"] = v
+end})
+Tabs.Main:AddToggle({Name = "Auto skill", Default = false, Callback = function(v)
+_G.AutoSkill = v
+end})
+
+Tabs.Minigame:AddDivider({Text = "Fishing Minigame"})
+Tabs.Main:AddToggle({Name = "Auto skill", Default = false, Callback = function(v)
+_G.AutoSkill = v
+end})
+
+
+
+
+
+
+
