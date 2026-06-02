@@ -1,9 +1,17 @@
+
+
+
+
+
+
+
+
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/recscript/Library/refs/heads/main/HWF_UI'))()
-local Window = HWF_CatchFish.Init({Title = "Heavyweight Fishing"})
+local Window = Library.Init({Title = "Heavyweight Fishing"})
 local Tabs = {
-Main = UI:CreateTab("rbxassetid://10734950309"),
-Misc = UI:CreateTab("rbxassetid://10734950309"),
-Minigame = UI:CreateTab("rbxassetid://10734950309"),
+Main = Window:CreateTab("rbxassetid://10734950309"),
+Misc = Window:CreateTab("rbxassetid://10734950309"),
+Minigame = Window:CreateTab("rbxassetid://10734950309"),
 }
 Tabs.Main:AddDivider({Text = "Teleport"})
 Tabs.Main:AddDropdown({
@@ -15,23 +23,23 @@ _G["Select your isle"] = v
 end})
 Tabs.Main:AddButton({Name = "Teleport to isle", Callback = function()
 if _G["Select your isle"] == "Beginning Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius1.CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius1.Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Bamboo Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius2.CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius2.Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Fallout Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat["Fallout Isle's So Tam"].CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat["Fallout Isle's So Tam"].Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Sovereign Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat["Sovereign Isle's So Tam"].CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat["Sovereign Isle's So Tam"].Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Perch Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius5.CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius5.Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Frost Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius6.CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius6.Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Coconut Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius7.CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius7.Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Amber Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius8.CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat.Lucius8.Head.CFrame - Vector3.new(0,15,0)
 elseif _G["Select your isle"] == "Battlefield Isle" then
-game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat["Battlefield Isle's So Tam"].CFrame - Vector3.new(0,15,0)
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.NPC.SpawnBoat["Battlefield Isle's So Tam"].Head.CFrame - Vector3.new(0,15,0)
 end
 end})
 Tabs.Main:AddDivider({Text = "Sell Fish"})
@@ -61,7 +69,7 @@ Tabs.Main:AddToggle({Name = "Auto skill", Default = false, Callback = function(v
 _G["Auto skill"] = v
 end})
 Tabs.Misc:AddDivider({Text = "Other"})
-Tabs.Main:AddToggle({Name = "Freeze position", Default = false, Callback = function(v)
+Tabs.Misc:AddToggle({Name = "Freeze position", Default = false, Callback = function(v)
 _G["Freeze position"] = v
 end})
 Tabs.Minigame:AddDivider({Text = "Fishing Minigame"})
@@ -71,7 +79,7 @@ end})
 
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G["Auto skill"] then
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("UseSkill"):FireServer(_G["Select your skill"] or "Z")
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("UseSkill"):FireServer(_G["Select your skill"])
 end
 if game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = _G["Freeze position"]
@@ -80,7 +88,6 @@ if _G["Balance minigame fish"] then
 game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Fishing.BarFrame.Bar.Position = game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Fishing.BarFrame.Position
 end
 end)
-
 
 
 
