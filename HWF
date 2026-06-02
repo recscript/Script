@@ -1,8 +1,8 @@
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/recscript/Library/refs/heads/main/HWF_UI'))()
-local Window = Library.Init({Title = "Heavyweight Fishing", ToggleIcon = "rbxassetid://10734895698"})
+local Window = Library.Init({Title = "Heavyweight Fishing", ToggleIcon = "rbxassetid://10734950020"})
 local Tabs = {
 Main = Window:CreateTab("rbxassetid://10723407389"),
-Misc = Window:CreateTab("rbxassetid://10723319896"),
+Misc = Window:CreateTab("rbxassetid://10734909540"),
 Minigame = Window:CreateTab("rbxassetid://10723395215"),
 }
 Tabs.Main:AddDivider({Text = "Teleport"})
