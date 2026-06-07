@@ -1,3 +1,12 @@
+game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+if (State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress) then
+local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
+if queue_func then
+queue_func([[loadstring(game:HttpGet("https://github.com/recscript/Script/blob/main/ROTTD Turkey Crate Farm?raw=true"))()]])
+end
+end
+end)
+
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -148,11 +157,4 @@ end)
 end
 end
 main()
-game.Players.LocalPlayer.OnTeleport:Connect(function(State)
-if (State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress) then
-local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
-if queue_func then
-queue_func([[loadstring(game:HttpGet("https://github.com/recscript/Script/blob/main/ROTTD Turkey Crate Farm?raw=true"))()]])
-end
-end
-end)
+
