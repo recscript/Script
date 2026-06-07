@@ -1,0 +1,158 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local function main()
+if Workspace:FindFirstChild("Mobs") then
+pcall(function() 
+if Workspace:FindFirstChild("Mobs") then
+Workspace.Mobs:Destroy() 
+end
+end)
+
+RunService.Heartbeat:Connect(function()
+local pos = CFrame.new(-368.2015380859375, 259.765380859375, -145.83775329589844)
+if not workspace.Towers:GetChildren()[2] then
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer("Large Turkey Speakerman", pos)
+end
+
+local towersFolder = Workspace:WaitForChild("Towers", 5)
+local TowerLv1 = towersFolder and towersFolder:FindFirstChild("Large Turkey Speakerman")
+local TowerLv2 = towersFolder and towersFolder:FindFirstChild("Large Turkey Speakerman2")
+local TowerLv3 = towersFolder and towersFolder:FindFirstChild("Large Turkey Speakerman3")
+
+if TowerLv1 then
+local args = {
+"Large Turkey Speakerman2",
+pos,
+TowerLv1
+}
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer(unpack(args))
+end
+if TowerLv2 then
+local args = {
+"Large Turkey Speakerman3",
+pos,
+TowerLv2
+}
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer(unpack(args))
+end
+if TowerLv3 then
+local args = {
+"Large Turkey Speakerman4",
+pos,
+TowerLv3
+}
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer(unpack(args))
+end
+local infoFolder = Workspace:FindFirstChild("Info")
+if infoFolder and infoFolder:FindFirstChild("Wave") then
+if infoFolder.Wave.Value > 59 then
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("ExitGame"):FireServer()
+end
+end
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("VoteSkip"):FireServer()
+end)
+else
+RunService.Heartbeat:Connect(function()
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("EnterElevator"):FireServer("Elevator21")
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("StartElevator"):FireServer("Elevator21")
+end)
+end
+end
+main()
+
+
+
+
+
+game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+if (State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress) then
+local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
+if queue_func then
+queue_func([[
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local function main()
+if Workspace:FindFirstChild("Mobs") then
+pcall(function() 
+if Workspace:FindFirstChild("Mobs") then
+Workspace.Mobs:Destroy() 
+end
+end)
+
+RunService.Heartbeat:Connect(function()
+local pos = CFrame.new(-368.2015380859375, 259.765380859375, -145.83775329589844)
+if not workspace.Towers:GetChildren()[2] then
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer("Large Turkey Speakerman", pos)
+end
+
+local towersFolder = Workspace:WaitForChild("Towers", 5)
+local TowerLv1 = towersFolder and towersFolder:FindFirstChild("Large Turkey Speakerman")
+local TowerLv2 = towersFolder and towersFolder:FindFirstChild("Large Turkey Speakerman2")
+local TowerLv3 = towersFolder and towersFolder:FindFirstChild("Large Turkey Speakerman3")
+
+if TowerLv1 then
+local args = {
+"Large Turkey Speakerman2",
+pos,
+TowerLv1
+}
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer(unpack(args))
+end
+if TowerLv2 then
+local args = {
+"Large Turkey Speakerman3",
+pos,
+TowerLv2
+}
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer(unpack(args))
+end
+if TowerLv3 then
+local args = {
+"Large Turkey Speakerman4",
+pos,
+TowerLv3
+}
+ReplicatedStorage:WaitForChild("Functions"):WaitForChild("SpawnTower"):InvokeServer(unpack(args))
+end
+local infoFolder = Workspace:FindFirstChild("Info")
+if infoFolder and infoFolder:FindFirstChild("Wave") then
+if infoFolder.Wave.Value > 59 then
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("ExitGame"):FireServer()
+end
+end
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("VoteSkip"):FireServer()
+end)
+else
+RunService.Heartbeat:Connect(function()
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("EnterElevator"):FireServer("Elevator21")
+ReplicatedStorage:WaitForChild("Events"):WaitForChild("StartElevator"):FireServer("Elevator21")
+end)
+end
+end
+main()
+game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+if (State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress) then
+local queue_func = queue_on_teleport or (syn and syn.queue_on_teleport)
+if queue_func then
+queue_func([[loadstring(game:HttpGet("https://github.com/recscript/Script/blob/main/ROTTD?raw=true"))()]])
+end
+end
+end)
