@@ -1,91 +1,103 @@
-local AFpos = game:GetService("Players").LocalPlayer.Character.Head.Position - Vector3.new(0,-5000,0)
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local Flux = loadstring(game:HttpGet"https://raw.githubusercontent.com/recscript/Library/refs/heads/main/FluxMobile")()
-local Window = Flux:Window("Aculiet Hub", "v0.0.1", Color3.fromRGB(0,255,100), Enum.KeyCode.F9)
-local Tab = Window:Tab("Main", "http://www.roblox.com/asset/?id=6023426915")
-Tab:Toggle("Hide Limit Wall", "Hide all wall limit", function(v)
-_G.HideLimitWall = v
+local Window = Fluent:CreateWindow({
+    Title = "Aculiet Hub",
+    SubTitle = "v0.0.1",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false, -- Tắt để giảm tối đa lag trên mobile
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main", Icon = "" })
+}
+
+local AFpos = game:GetService("Players").LocalPlayer.Character and (game:GetService("Players").LocalPlayer.Character:FindFirstChild("Head") and game:GetService("Players").LocalPlayer.Character.Head.Position - Vector3.new(0,-5000,0)) or Vector3.new(0,0,0)
+local oldpos = nil
+
+-- ==========================================
+-- CHUYỂN ĐỔI TÍNH NĂNG TỪ FLUX SANG FLUENT
+-- ==========================================
+
+-- Hide Limit Wall
+local HideLimitWallToggle = Tabs.Main:AddToggle("HideLimitWall", {Title = "Hide Limit Wall", Default = false})
+HideLimitWallToggle:OnChanged(function(v)
+    _G.HideLimitWall = v
 end)
-Tab:Toggle("Auto Farm", "Auto farm cash & win", function(v)
-local oldpos = game:GetService("Players").LocalPlayer.Character.Head.Position
-wait(0.3)
-_G.AutoFarm = v
-if _G.AutoFarm == false then
-game:GetService("Players").LocalPlayer.Character.Head.CFrame = oldpos
-end
+
+-- Auto Farm
+local AutoFarmToggle = Tabs.Main:AddToggle("AutoFarm", {Title = "Auto Farm", Default = false})
+AutoFarmToggle:OnChanged(function(v)
+    local char = game:GetService("Players").LocalPlayer.Character
+    if char and char:FindFirstChild("Head") then
+        oldpos = char.Head.Position
+    end
+    wait(0.3)
+    _G.AutoFarm = v
+    if _G.AutoFarm == false and oldpos and char and char:FindFirstChild("Head") then
+        char.Head.CFrame = CFrame.new(oldpos)
+        char.Head.Anchored = true
+        wait(0.5)
+        char.Head.Anchored = false
+    end
 end)
-Tab:Toggle("Monsters ESP", "Monsters esp can help you identify it", function(v)
-_G.MonstersESP = v
+
+-- Monsters ESP
+local MonstersESPToggle = Tabs.Main:AddToggle("MonstersESP", {Title = "Monsters ESP", Default = false})
+MonstersESPToggle:OnChanged(function(v)
+    _G.MonstersESP = v
 end)
-Tab:Toggle("Anti Monsters", "You will dont bag dmg form monsters", function(v)
-_G.AntiMonsters = v
+
+-- Behind Monsters
+local BehindMonstersToggle = Tabs.Main:AddToggle("BehindMonsters", {Title = "Behind Monsters (OP & Fun)", Default = false})
+BehindMonstersToggle:OnChanged(function(v)
+    _G.BehindMonsters = v
 end)
-Tab:Toggle("Behind Monsters (OP & Fun)", "You will always behind monsters you very safe", function(v)
-_G.BehindMonsters = v
-end)
+
+-- ==========================================
+-- VÒNG LẶP XỬ LÝ LOGIC GAME
+-- ==========================================
 game:GetService("RunService").Heartbeat:Connect(function()
-local Character = game:GetService("Players").LocalPlayer.Character
-if not Character then return end
-for _,v in ipairs(workspace:GetChildren()) do
-if v.Name == "Part" then
-v.CanCollide = not _G.HideLimitWall
-v.Transparency = _G.HideLimitWall and 1 or 0
-end
-end
-if _G.AutoFarm then
-Character.HumanoidRootPart.CFrame = AFpos
-end
-for _,v in ipairs(workspace:GetChildren()) do
-if _G.MonstersESP then
-if v:IsA("Model") and not v:FindFirstChild("Monsters_ESP") then
-local m_h = Instance.new("Highlight",v)
-m_h.Name = "Monsters_ESP"
-m_h.OutlineColor = Color3.fromRGB(255)
-end
-else
-if v:FindFirstChild("Monsters_ESP") then
-m_h:Destroy()
-end
-end
-end
-for _,v in ipairs(workspace:GetChildren()) do
-if v:IsA("Model") then
-for _,v2 in ipairs(v:GetChildren()) do
-if v2:IsA("BasePart") then
-v2.CanCollide = not _G.AntiMonsters
-v2.CanTouch = not _G.AntiMonsters
-end
-end
-end
-end
+    local Character = game:GetService("Players").LocalPlayer.Character
+    if not Character then return end
+    
+    -- Hide Limit Wall
+    for _, v in ipairs(workspace:GetChildren()) do
+        if v.Name == "Part" then
+            v.CanCollide = not _G.HideLimitWall
+            v.Transparency = _G.HideLimitWall and 1 or 0
+        end
+    end
+    
+    -- Auto Farm
+    if _G.AutoFarm and Character:FindFirstChild("HumanoidRootPart") then
+        Character.HumanoidRootPart.CFrame = CFrame.new(AFpos)
+    end
+    
+    -- Monsters ESP
+    for _, v in ipairs(workspace:GetChildren()) do
+        if _G.MonstersESP then
+            if (v.Name == "Cinos" or v.Name == "Mouse") and v:IsA("Model") and not v:FindFirstChild("Monsters_ESP") then
+                local m_h = Instance.new("Highlight", v)
+                m_h.Name = "Monsters_ESP"
+                m_h.OutlineColor = Color3.fromRGB(255, 255, 255)
+            end
+        else
+            if v:FindFirstChild("Monsters_ESP") then
+                v.Monsters_ESP:Destroy()
+            end
+        end
+    end
+    -- Behind Monsters
+    for _, v in ipairs(workspace:GetChildren()) do
+        if _G.BehindMonsters then
+            if (v.Name == "Cinos" or v.Name == "Mouse") and v:IsA("Model") then
+               Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame - Vector3.new(0,0,15)
+            end
+        end
+    end
 end)
 
-
-
-
---[[
-tab:Button("Kill all", "This function may not work sometimes and you can get banned.", function()
-Flux:Notification("Killed all players successfully!", "Alright")
-end)
-tab:Label("This is just a label.")
-tab:Line()
-tab:Toggle("Auto-Farm Coins", "Automatically collects coins for you!", function(t)
-print(t)
-end)
-tab:Slider("Walkspeed", "Makes your faster.", 0, 100,16,function(t)
-print(t)
-end)
-tab:Dropdown("Part to aim at", {"Torso","Head","Penis"}, function(t)
-print(t)
-end)
-tab:Colorpicker("ESP Color", Color3.fromRGB(255,1,1), function(t)
-print(t)
-end)
-tab:Textbox("Gun Power", "This textbox changes your gun power, so you can kill everyone faster and easier.", true, function(t)
-print(t)
-end)
-tab:Bind("Kill Bind", Enum.KeyCode.Q, function()
-print("Killed a random person!")
-end)
-win:Tab("Tab 2", "http://www.roblox.com/asset/?id=6022668888")
-]]--
+Window:SelectTab(1)
