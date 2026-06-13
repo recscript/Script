@@ -1,13 +1,21 @@
+
+
+
+
+
+
+
+
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "Aculiet Hub",
     SubTitle = "v0.0.1",
     TabWidth = 160,
-    Size = UDim2.fromOffset(480, 360),
+    Size = UDim2.fromOffset(380, 260),
     Acrylic = false, -- Tắt để giảm tối đa lag trên mobile
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.F11
 })
 
 local Tabs = {
@@ -94,7 +102,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
     for _, v in ipairs(workspace:GetChildren()) do
         if _G.BehindMonsters then
             if (v.Name == "Cinos" or v.Name == "Mouse") and v:IsA("Model") then
-               Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame - Vector3.new(0,0,15)
+               Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame - Vector3.new(0,30,0)
             end
         end
     end
