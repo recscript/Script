@@ -1,0 +1,46 @@
+local Flux = loadstring(game:HttpGet"https://raw.githubusercontent.com/recscript/Library/refs/heads/main/FluxMobile")()
+
+local Window = Flux:Window("Aculiet Hub", "v0.0.1", Color3.fromRGB(0,255,100), Enum.KeyCode.F9)
+local Tab = Window:Tab("Main", "http://www.roblox.com/asset/?id=6023426915")
+Tab:Toggle("Hide Limit Wall", "Hide all wall limit", function(v)
+_G.HideLimitWall = v
+end)
+Tab:Toggle("Auto Farm", "Auto farm cash & win", function(v)
+_G.AutoFarm = v
+end)
+Tab:Toggle("Monsters ESP", "Monsters esp can help you identify it", function(v)
+_G.MonstersESP = v
+end)
+Tab:Toggle("Anti Monsters", "You will dont bag dmg form monsters", function(v)
+_G.AntiMonsters = v
+end)
+Tab:Toggle("Behind Monsters (OP & Fun)", "You will always behind monsters you very safe", function(v)
+_G.BehindMonsters = v
+end)
+
+--[[
+tab:Button("Kill all", "This function may not work sometimes and you can get banned.", function()
+Flux:Notification("Killed all players successfully!", "Alright")
+end)
+tab:Label("This is just a label.")
+tab:Line()
+tab:Toggle("Auto-Farm Coins", "Automatically collects coins for you!", function(t)
+print(t)
+end)
+tab:Slider("Walkspeed", "Makes your faster.", 0, 100,16,function(t)
+print(t)
+end)
+tab:Dropdown("Part to aim at", {"Torso","Head","Penis"}, function(t)
+print(t)
+end)
+tab:Colorpicker("ESP Color", Color3.fromRGB(255,1,1), function(t)
+print(t)
+end)
+tab:Textbox("Gun Power", "This textbox changes your gun power, so you can kill everyone faster and easier.", true, function(t)
+print(t)
+end)
+tab:Bind("Kill Bind", Enum.KeyCode.Q, function()
+print("Killed a random person!")
+end)
+win:Tab("Tab 2", "http://www.roblox.com/asset/?id=6022668888")
+]]--
