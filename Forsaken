@@ -257,3 +257,59 @@ v.HoldDuration = 0
 end
 end
 
+local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
+local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+Library.ForceCheckbox = true
+
+local Window = Library:CreateWindow({
+	Title = "Forsaken",
+	Footer = "Forsaken (Game)",
+	Icon = "nope",
+	NotifySide = "Right",
+	ShowCustomCursor = true,
+})
+
+local Tabs = {
+  Info = Window:AddTab("Info", "user")
+	Main = Window:AddTab("Main", "home"),
+}
+
+local Generator = Tabs.Main:AddLeftGroupbox("Generator")
+Generator:AddSlider("MinRandom", {
+	Text = "Min Random Delay",
+	Default = 3,
+	Min = 2,
+	Max = 5,
+	Rounding = 1,
+	Compact = false,
+	Callback = function(v)
+  _G.MinRandomDelay = v
+end})
+Generator:AddSlider("MaxRandom", {
+	Text = "Max Random Delay",
+	Default = 6,
+	Min = 5,
+	Max = 10,
+	Rounding = 1,
+	Compact = false,
+	Callback = function(v)
+  _G.MaxRandomDelay = v
+end})
+Generator:AddCheckbox("AutoGen", {
+	Text = "Auto Generator",
+	Default = false,
+	Callback = function(v)
+	_G.AutoGenerator = v
+end})
+Generator:AddCheckbox("HideMinigameSolve", {
+	Text = "Hide Minigame Solve",
+	Default = false,
+	Callback = function(v)
+	_G.HideMinigameSolve = v
+end})
