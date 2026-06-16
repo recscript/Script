@@ -12,12 +12,14 @@ print(title)
 end
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
+local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Camera = Workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
+local Character = nil
 local Map = Workspace.Map
 local Ingame = Map.Ingame
 local Modules = ReplicatedStorage:WaitForChild("Modules")
@@ -27,11 +29,122 @@ local SurvivorEffect = Effects:WaitForChild("SurvivorExclusive")
 local PlayersFolder = Workspace:WaitForChild("Players")
 local Killers = PlayersFolder:WaitForChild("Killers")
 local Survivors = PlayersFolder:WaitForChild("Survivors")
-
+local Folder = Instance.new("Folder", workspace)
 
 local RealMap = Ingame:FindFirstChild("Map")
 if RealMap then
 ConsoleNotify("⭕ | Check Map")
 else
-ConsoleNotify("❌ | Check Map failed")
+if not RealMap then continue end
 end
+
+--// Instance Solve Generator \\
+local function instancesolvegen()
+for _,v in ipairs(RealMap:GetChildren()) do
+if v.Name == "Generator" then
+v.Remotes.RE:FireServer()
+end
+end
+end
+--// Hide Minigame Solve \\
+local function hideminigamesolve(state)
+end
+--// Coin Flip \\
+local function coinflip()
+ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer("UseActorAbility", "CoinFlip")
+end
+--// Pickup Items \\
+local function pickupitems()
+for _,v in ipairs(Map:GetChildren()) do
+if v.Name == "Medkit" then fireproximityprompt(v.ItemRoot.ProximityPrompt)
+elseif v.Name == "BloxyCola" then fireproximityprompt(v.ItemRoot.ProximityPrompt) end end
+for _,v in ipairs(Ingame:GetChildren()) do
+if v.Name == "Medkit" then fireproximityprompt(v.ItemRoot.ProximityPrompt)
+elseif v.Name == "BloxyCola" then fireproximityprompt(v.ItemRoot.ProximityPrompt) end end
+end
+--// Invisible \\
+local function invisible(state)
+if state then
+local Animation = Instance.new("Animation");Animation.Name = "Invisible";Animation.AnimationId = "rbxassetid://75804462760596"
+local Load = Character.Humanoid:LoadAnimation(Animation) Load:Play(0,1,1) Load:AdjustSpeed(0)
+else
+for i,v in next, Character.Humanoid:GetPlayingAnimationTracks() do
+if v.Animation.Name == "Invisible" then v:Stop() end end
+end
+end
+--// Field Of View \\
+local function fov(state)
+Character.FOVMultipliers.FOVSetting.Value = state
+end
+--// Remove Fog \\
+local function removefog(state)
+if not Lighting:GetAttribute("FogStart") then Lighting:SetAttribute("FogStart", Lighting.FogStart) end
+if not Lighting:GetAttribute("FogEnd") then Lighting:SetAttribute("FogEnd", Lighting.FogEnd) end
+game.Lighting.FogStart = state and 0 or Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = state and math.huge or Lighting:GetAttribute("FogEnd")
+local fog = Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = state and 0 or fog:GetAttribute("Density")
+end
+end
+--// Fullbright \\
+local function fullbright(state)
+if state then
+Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
+Lighting.Brightness = 1.5
+Lighting.GlobalShadows = false
+end
+end
+--// Remove Fake Noli \\
+local function nofakenoli(state)
+if state and KillerEffect:FindFirstChild("Hallucination") then
+KillerEffect.Hallucination.Parent = Folder
+elseif Folder:FindFirstChild("Hallucination") then
+Folder.Hallucination.Parent = KillerEffect
+end
+end
+--// Remove Subspaced \\
+local function nosubspaced(state)
+if state and SurvivorEffect:FindFirstChild("Subspaced") then
+SurvivorEffect.Subspaced.Parent = Folder
+elseif Folder:FindFirstChild("Subspaced") then
+Folder.Subspaced.Parent = SurvivorEffect
+end
+end
+--// Remove Blindness \\
+local function noblindness(state)
+if state and Effects:FindFirstChild("Blindness") then
+Effects.Blindness.Parent = Folder
+elseif Folder:FindFirstChild("Blindness") then
+Folder.Blindness.Parent = Effects
+end
+end
+--// Remove Slowness \\
+local function noslowness(state)
+if v and Effects:FindFirstChild("Slowness") then
+Effects.Slowness.Parent = Folder
+elseif Folder:FindFirstChild("Slowness") then
+Folder.Slowness.Parent = Effects
+end
+end
+--// Killers ESP \\
+function KillerESP()
+for _, v in pairs(Killers:GetChildren()) do
+if v:IsA("Model") and not v:FindFirstChild("Killer_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Killer_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(0,0,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name .. "\n";TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(0,0,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Killer_ESP"
+end
+end
+end
+
+
+
+
+
+
