@@ -136,15 +136,119 @@ local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
 Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Killer_ESP";Billboard.Active = true;
-TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(0,0,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name .. "\n";TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name .. "\n" .. v:GetAttribute("SkinNameDisplay");TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
 UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
-local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(0,0,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Killer_ESP"
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Killer_ESP"
 end
 end
 end
-
-
-
-
+--// Survivors ESP \\
+function SurvivorESP()
+for _, v in pairs(Survivors:GetChildren()) do
+if v:IsA("Model") and not v:FindFirstChild("Survivor_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Survivor_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(0,0,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(0,0,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Survivor_ESP"
+task.spawn(function()
+while true do
+local Humanoid = v:FindFirstChild("Humanoid")
+if not Humanoid then return end
+TextLabel.Text = v:GetAttribute("Username") .. "\n" .. Humanoid.Health .. "/" .. Humanoid.MaxHealth
+if Humanoid.Health > (Humanoid.MaxHealth * 0.75) then
+Highlight.FillColor = Color3.new(0,1,0.5)
+Highlight.OutlineColor = Color3.new(0,1,0.5)
+TextLabel.TextColor3 = Color3.new(0,1,0.5)
+elseif Humanoid.Health > (Humanoid.MaxHealth * 0.5) then
+Highlight.FillColor = Color3.new(0,1,0.2)
+Highlight.OutlineColor = Color3.new(0,1,0.2)
+TextLabel.TextColor3 = Color3.new(0,1,0.2)
+elseif Humanoid.Health > (Humanoid.MaxHealth * 0.25) then
+Highlight.FillColor = Color3.new(1,1,0)
+Highlight.OutlineColor = Color3.new(1,1,0)
+TextLabel.TextColor3 = Color3.new(1,1,0)
+elseif Humanoid.Health < (Humanoid.MaxHealth * 0.25) then
+Highlight.FillColor = Color3.new(1,0.2,0.2)
+Highlight.OutlineColor = Color3.new(1,0.2,0.2)
+TextLabel.TextColor3 = Color3.new(1,0.2,0.2)
+end
+wait()
+end
+end)
+end
+end
+end
+--// Items ESP \\
+local function ItemsESP()
+for _, v in ipairs(RealMap:GetChildren()) do
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Items_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Items_ESP"
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Items_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Items_ESP"
+end
+end
+for _, v in ipairs(Ingame:GetChildren()) do
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Items_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Items_ESP"
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Items_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Items_ESP"
+end
+end
+end
+--// Minions ESP \\
+local function MinionsESP()
+for _, v in ipairs(Ingame:GetChildren()) do
+if v:IsA("Model") and v:GetAttribute("Team") == "Killers" and not v:FindFirstChild("Minion_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Minion_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Minion_ESP"
+end
+end
+end
+--// Subspace Tripware \\
+local function SubspaceTripwareESP()
+for _, v in ipairs(Ingame:GetDescendants()) do
+if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Minion_ESP";Billboard.Active = true;
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(0,1,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(0,1,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Minion_ESP"
+end
+end
+end
 
 
