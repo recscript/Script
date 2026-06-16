@@ -250,5 +250,10 @@ local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.Highli
 end
 end
 end
-
+--// Instance Interact \\
+local function instanceinteract(state)
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
 
