@@ -19,6 +19,7 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Camera = Workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer.PlayerGui
 local Character = nil
 local Map = Workspace.Map
 local Ingame = Map.Ingame
@@ -29,6 +30,7 @@ local SurvivorEffect = Effects:WaitForChild("SurvivorExclusive")
 local PlayersFolder = Workspace:WaitForChild("Players")
 local Killers = PlayersFolder:WaitForChild("Killers")
 local Survivors = PlayersFolder:WaitForChild("Survivors")
+local StaminaScript = require(ReplicatedStorage.Systems.Character.Game.Sprinting)
 local Folder = Instance.new("Folder", workspace)
 
 local RealMap = Ingame:FindFirstChild("Map")
@@ -426,23 +428,69 @@ Exploit:AddCheckbox("Remove Fake Noli", {
 	Text = "Remove Fake Noli",
 	Default = false,
 	Callback = function(v)
-	_G.RemoveFakeNoli = v
+	nofakenoli(v)
 end})
 Exploit:AddCheckbox("Remove Subspaced", {
 	Text = "Remove Subspaced",
 	Default = false,
 	Callback = function(v)
-	_G.RemoveSubspaced = v
+	nosubspaced(v)
 end})
 Exploit:AddCheckbox("Remove Blindness", {
 	Text = "Remove Blindness",
 	Default = false,
 	Callback = function(v)
-	_G.RemoveBlindness = v
+	noblindness(v)
 end})
 Exploit:AddCheckbox("Remove Slowness", {
 	Text = "Remove Slowness",
 	Default = false,
 	Callback = function(v)
-	_G.RemoveSlowness = v
+	noslowness(v)
 end})
+local Camera = Tabs.Main:AddRightGroupbox("Camera")
+
+task.spawn(function()
+while _G.AutoGenerator and PlayerGui:FindFirstChild('PuzzleUI') do
+instancesolvegen()
+wait(math.random(_G.MinRandomDelay,_G.MaxRandomDelay))
+end
+while _G.AutoCoinFlip do
+coinflip()
+wait()
+end
+while _G.AutoPickup do
+pickupitems()
+wait()
+end
+end)
+RunService.Heartbeat:Connect(function()
+for _,v in pairs(Survivors:GetChildren()) do
+if v:GetAttribute("Username") == game.Players.LocalPlayer.Name then
+StaminaScript.MaxStamina = _G.MaxStaminaSurvivor or 100
+StaminaScript.StaminaGain = _G.StaminaGainSurvivor or 10
+StaminaScript.StaminaLoss = _G.StaminaLossSurvivor or 10
+StaminaScript.SprintSpeed = _G.SprintSpeedSurvivor or 26
+end
+end
+for _,v in pairs(Killers:GetChildren()) do
+if v:GetAttribute("Username") == game.Players.LocalPlayer.Name then
+StaminaScript.MaxStamina = _G.MaxStaminaKiller or 110
+StaminaScript.StaminaGain = _G.StaminaGainKiller or 12
+StaminaScript.StaminaLoss = _G.StaminaLossKiller or 9
+StaminaScript.SprintSpeed = _G.SprintSpeedKiller or 27
+end
+end
+invisible(_G.Invisible)
+
+end)
+
+InfStamina = RunService.Heartbeat:Connect(function()
+if not _G.AntiReduceStamina then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
+end
+end)
