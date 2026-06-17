@@ -131,8 +131,7 @@ Folder.Slowness.Parent = Effects
 end
 end
 --// Killers ESP \\
-function KillerESP()
-for _, v in pairs(Killers:GetChildren()) do
+function KillerESP(v)
 if v:IsA("Model") and not v:FindFirstChild("Killer_ESP") then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -143,10 +142,8 @@ UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
 local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Killer_ESP"
 end
 end
-end
 --// Survivors ESP \\
-function SurvivorESP()
-for _, v in pairs(Survivors:GetChildren()) do
+function SurvivorESP(v)
 if v:IsA("Model") and not v:FindFirstChild("Survivor_ESP") then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -182,10 +179,8 @@ end
 end)
 end
 end
-end
 --// Items ESP \\
-local function ItemsESP()
-for _, v in ipairs(RealMap:GetChildren()) do
+local function ItemsESP(v)
 if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -203,8 +198,6 @@ TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 
 UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
 local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Items_ESP"
 end
-end
-for _, v in ipairs(Ingame:GetChildren()) do
 if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -221,12 +214,10 @@ Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.N
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
 UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
 local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Items_ESP"
-end
 end
 end
 --// Minions ESP \\
-local function MinionsESP()
-for _, v in ipairs(Ingame:GetChildren()) do
+local function MinionsESP(v)
 if v:IsA("Model") and v:GetAttribute("Team") == "Killers" and not v:FindFirstChild("Minion_ESP") then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
@@ -237,18 +228,84 @@ UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
 local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Minion_ESP"
 end
 end
+--// Generator ESP \\
+local function GeneratorESP(v)
+if v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+--// Billboard \\
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Name = "Generator_ESP"
+Billboard.Active = true
+--// TextLabel \\
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,0,1)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = "Đạt béo sau khi coi source!:D"
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
+--// UIStroke \\
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+local Highlight = Instance.new('Highlight', v)
+--// Highlight \\
+Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+Highlight.FillColor = Color3.new(0,0,1)
+Highlight.OutlineColor = Color3.new(0,0,1)
+Highlight.FillTransparency = 1
+Highlight.OutlineTransparency =  0
+Highlight.Name = "Generator_ESP"
+task.spawn(function()
+while true do
+TextLabel.Text = "Generator\n" .. v.Progress.Value .. "%"
+local Progress = v.Progress
+if Progress.Value < 27 then
+Highlight.FillColor = Color3.new(0,0.3,1)
+Highlight.OutlineColor = Color3.new(0,0.3,1)
+TextLabel.TextColor3 = Color3.new(0,0.3,1)
+elseif Progress.Value < 53 then
+Highlight.FillColor = Color3.fromRGB(0,100,200)
+Highlight.OutlineColor = Color3.fromRGB(0,100,200)
+TextLabel.TextColor3 = Color3.fromRGB(0,100,200)
+elseif Progress.Value < 79 then
+Highlight.FillColor = Color3.fromRGB(0,200,100)
+Highlight.OutlineColor = Color3.fromRGB(0,200,100)
+TextLabel.TextColor3 = Color3.fromRGB(0,200,100)
+elseif Progress.Value < 101 then
+Highlight.FillColor = Color3.fromRGB(0,255,0)
+Highlight.OutlineColor = Color3.fromRGB(0,255,0)
+TextLabel.TextColor3 = Color3.fromRGB(0,255,0)
 end
---// Subspace Tripware \\
-local function SubspaceTripwareESP()
-for _, v in ipairs(Ingame:GetDescendants()) do
+wait()
+end
+end)
+end
+end
+--// Subspace Tripware ESP \\
+local function SubspaceTripwareESP(v)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
-Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "Minion_ESP";Billboard.Active = true;
+Billboard.AlwaysOnTop = true;Billboard.Size = UDim2.new(0,400,0,100);Billboard.Name = "SubspaceTripmine_ESP";Billboard.Active = true;
 TextLabel.AnchorPoint = Vector2.new(0.5,0.5);TextLabel.BackgroundTransparency = 1;TextLabel.BackgroundColor3 = Color3.new(0,0,0);TextLabel.TextColor3 = Color3.new(0,1,1);TextLabel.Font = "SourceSansBold";TextLabel.TextSize = 14;TextLabel.TextTransparency = 0;TextLabel.Visible = true;TextLabel.Text = v.Name;TextLabel.Size = UDim2.new(1,0,0,0);TextLabel.Position = UDim2.new(0.5,0,0.7,-35)
 UIStroke.Thickness = 1;UIStroke.Color = Color3.new();UIStroke.Transparency = 0
-local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(0,1,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "Minion_ESP"
+local Highlight = Instance.new('Highlight', v);Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;Highlight.FillColor = Color3.new(0,0,1);Highlight.OutlineColor = Color3.new(0,1,1);Highlight.FillTransparency = 1;Highlight.OutlineTransparency =  0;Highlight.Name = "SubspaceTripmine_ESP"
+end
+end
+--// Remove ESP \\
+local function noesp(name)
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == name then
+v:Destroy()
 end
 end
 end
@@ -451,15 +508,129 @@ end})
 local Camera = Tabs.Main:AddRightGroupbox("Camera")
 Camera:AddSlider("Fov", {
 	Text = "Field Of View",
-	Default = 110,
-	Min = 110,
-	Max = 400,
+	Default = 70,
+	Min = 70,
+	Max = 120,
 	Rounding = 1,
 	Compact = false,
 	Callback = function(v)
-  _G.MaxStaminaKiller = v
+  _G.FieldOfView = v
 end})
-
+Camera:AddCheckbox("Remove Fog", {
+	Text = "Remove Fog",
+	Default = false,
+	Callback = function(v)
+	_G.NoFog = v
+end})
+Camera:AddCheckbox("Fullbright", {
+	Text = "Fullbright",
+	Default = false,
+	Callback = function(v)
+	_G.Fullbright = v
+end})
+Camera:AddDivider()
+Camera:AddCheckbox("Killer ESP", {
+	Text = "Killers ESP",
+	Default = false,
+	Callback = function(v)
+if v then
+for _,v in ipairs(Killers:GetChildren()) do
+KillerESP(v)
+end
+KillerESP = Killers.ChildAdded:Connect(function(v)
+KillerESP(v)
+end)
+else
+KillerESP:Disconnect()
+noesp("Killer_ESP")
+end
+end})
+Camera:AddCheckbox("Survivor ESP", {
+	Text = "Survivors ESP",
+	Default = false,
+	Callback = function(v)
+if v then
+for _,v in ipairs(Survivors:GetChildren()) do
+SurvivorESP(v)
+end
+SurvivorESP = Survivors.ChildAdded:Connect(function(v)
+SurvivorESP(v)
+end)
+else
+SurvivorESP:Disconnect()
+noesp("Survivor_ESP")
+end
+end})
+Camera:AddCheckbox("Items ESP", {
+	Text = "Items ESP",
+	Default = false,
+	Callback = function(v)
+if v then
+for _,v in ipairs(Ingame:GetChildren()) do
+ItemsESP(v)
+end
+for _,v in ipairs(RealMap:GetChildren()) do
+ItemsESP(v)
+end
+ItemsESP = Ingame.ChildAdded:Connect(function(v)
+ItemsESP(v)
+end)
+ItemsESP = RealMap.ChildAdded:Connect(function(v)
+ItemsESP(v)
+end)
+else
+ItemsESP:Disconnect()
+noesp("Items_ESP")
+end
+end})
+Camera:AddCheckbox("Minions ESP", {
+	Text = "Minions ESP",
+	Default = false,
+	Callback = function(v)
+if v then
+for _,v in ipairs(Ingame:GetChildren()) do
+MinionsESP(v)
+end
+MinionsESP = Ingame.ChildAdded:Connect(function(v)
+MinionsESP(v)
+end)
+else
+MinionsESP:Disconnect()
+noesp("Minion_ESP")
+end
+end})
+Camera:AddCheckbox("Generator ESP", {
+	Text = "Generators ESP",
+	Default = false,
+	Callback = function(v)
+if v then
+for _,v in ipairs(RealMap:GetChildren()) do
+GeneratorESP(v)
+end
+GeneratorESP = RealMap.ChildAdded:Connect(function(v)
+GeneratorESP(v)
+end)
+else
+GeneratorESP:Disconnect()
+noesp("Generator_ESP")
+end
+end})
+Camera:AddCheckbox("Taph Trap ESP", {
+	Text = "Taph Trap ESP",
+	Default = false,
+	Callback = function(v)
+if v then
+for _,v in ipairs(Ingame:GetDescendant()) do
+SubspaceTripwareESP(v)
+end
+SubspaceTripmineESP = Ingame.DescendantAdded:Connect(function(v)
+SubspaceTripwareESP(v)
+end)
+else
+SubspaceTripwareESP:Disconnect()
+noesp("SubspaceTripmine_ESP")
+end
+end})
 task.spawn(function()
 while _G.AutoGenerator and PlayerGui:FindFirstChild('PuzzleUI') do
 instancesolvegen()
@@ -475,6 +646,10 @@ wait()
 end
 end)
 RunService.Heartbeat:Connect(function()
+Character = LocalPlayer.Character
+if not Character then return end
+RealMap = Ingame:FindFirstChild("Map")
+if not RealMap then return end
 for _,v in pairs(Survivors:GetChildren()) do
 if v:GetAttribute("Username") == game.Players.LocalPlayer.Name then
 StaminaScript.MaxStamina = _G.MaxStaminaSurvivor or 100
@@ -492,7 +667,9 @@ StaminaScript.SprintSpeed = _G.SprintSpeedKiller or 27
 end
 end
 invisible(_G.Invisible)
-
+fov(_G.FieldOfView * 0.0125)
+removefog(_G.NoFog)
+fullbright(_G.Fullbright)
 end)
 
 InfStamina = RunService.Heartbeat:Connect(function()
