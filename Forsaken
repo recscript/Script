@@ -449,6 +449,16 @@ Exploit:AddCheckbox("Remove Slowness", {
 	noslowness(v)
 end})
 local Camera = Tabs.Main:AddRightGroupbox("Camera")
+Camera:AddSlider("Fov", {
+	Text = "Field Of View",
+	Default = 110,
+	Min = 110,
+	Max = 400,
+	Rounding = 1,
+	Compact = false,
+	Callback = function(v)
+  _G.MaxStaminaKiller = v
+end})
 
 task.spawn(function()
 while _G.AutoGenerator and PlayerGui:FindFirstChild('PuzzleUI') do
