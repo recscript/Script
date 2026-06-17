@@ -313,3 +313,136 @@ Generator:AddCheckbox("HideMinigameSolve", {
 	Callback = function(v)
 	_G.HideMinigameSolve = v
 end})
+local Misc = Tabs.Main:AddRightGroupbox("Misc")
+Misc:AddCheckbox("AutoCoinFlip", {
+	Text = "Auto Coin Flip",
+	Default = false,
+	Callback = function(v)
+	_G.AutoCoinFlip = v
+end})
+Misc:AddCheckbox("AutoPickup", {
+	Text = "Auto Pickup",
+	Default = false,
+	Callback = function(v)
+	_G.AutoPickup = v
+end})
+local Survivor = Tabs.Main:AddLeftGroupbox("Survivor")
+Survivor:AddSlider("MaxStamina", {
+	Text = "Max Stamina",
+	Default = 100,
+	Min = 100,
+	Max = 400,
+	Rounding = 1,
+	Compact = false,
+	Callback = function(v)
+  _G.MaxStaminaSurvivor = v
+end})
+Survivor:AddSlider("StaminaGain",{
+    Text = "Stamina Gain",
+    Min = 10,
+    Default = 10,
+    Max = 400,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+  _G.StaminaGainSurvivor = v
+end})
+Survivor:AddSlider("StaminaLoss",{
+    Text = "Stamina Loss",
+    Min = 0,
+    Default = 10,
+    Max = 10,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+  _G.StaminaLossSurvivor = v
+end})
+Survivor:AddSlider("SprintSpeed",{
+    Text = "Sprint Speed",
+    Min = 24,
+    Default = 24,
+    Max = 29,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+  _G.SprintSpeedSurvivor = v
+end})
+local Killer = Tabs.Main:AddLeftGroupbox("Killer")
+Killer:AddSlider("MaxStamina", {
+	Text = "Max Stamina",
+	Default = 110,
+	Min = 110,
+	Max = 400,
+	Rounding = 1,
+	Compact = false,
+	Callback = function(v)
+  _G.MaxStaminaKiller = v
+end})
+Killer:AddSlider("StaminaGain",{
+    Text = "Stamina Gain",
+    Min = 12,
+    Default = 12,
+    Max = 400,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+  _G.StaminaGainKiller = v
+end})
+Killer:AddSlider("StaminaLoss",{
+    Text = "Stamina Loss",
+    Min = 0,
+    Default = 9,
+    Max = 9,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+  _G.StaminaLossKiller = v
+end})
+Killer:AddSlider("SprintSpeed",{
+    Text = "Sprint Speed",
+    Min = 27,
+    Default = 27,
+    Max = 29,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+  _G.SprintSpeedKiller = v
+end})
+local Exploit = Tabs.Main:AddRightGroupbox("Exploit")
+Exploit:AddCheckbox("Invisible", {
+	Text = "Invisible",
+	Default = false,
+	Callback = function(v)
+	_G.Invisible = v
+end})
+Exploit:AddCheckbox("Anti Reduce Stamina", {
+	Text = "Anti Reduce Stamina",
+	Default = false,
+	Callback = function(v)
+	_G.AntiReduceStamina = v
+end})
+Exploit:AddDivider()
+Exploit:AddCheckbox("Remove Fake Noli", {
+	Text = "Remove Fake Noli",
+	Default = false,
+	Callback = function(v)
+	_G.RemoveFakeNoli = v
+end})
+Exploit:AddCheckbox("Remove Subspaced", {
+	Text = "Remove Subspaced",
+	Default = false,
+	Callback = function(v)
+	_G.RemoveSubspaced = v
+end})
+Exploit:AddCheckbox("Remove Blindness", {
+	Text = "Remove Blindness",
+	Default = false,
+	Callback = function(v)
+	_G.RemoveBlindness = v
+end})
+Exploit:AddCheckbox("Remove Slowness", {
+	Text = "Remove Slowness",
+	Default = false,
+	Callback = function(v)
+	_G.RemoveSlowness = v
+end})
