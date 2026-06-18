@@ -120,6 +120,34 @@ end
 end
 end
 end})
+Tabs.Main:AddButton({
+  Name = "Claim Bandage",
+  Callback = function()
+local OldPos = Character.HumanoidRootPart.CFrame
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" and v2:FindFirstChild("Bandage") then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Bandage" then
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 15 then
+Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+wait()
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+wait()
+Character.HumanoidRootPart.CFrame = OldPos
+end
+end
+end
+else
+Library:MakeNotification({
+Title = "Alert",
+Description = "❌ Not Found",
+Duration = 5
+})
+end
+end
+end
+end})
 Tabs.Main:AddSection({"Lighting"})
 Tabs.Main:AddCheckbox({
   Name = "Fullbright",
