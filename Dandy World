@@ -81,12 +81,6 @@ Tabs.Main:AddCheckbox({
 _G.SpeedBoost = v
 end})
 Tabs.Main:AddCheckbox({
-  Name = "Inf Stamina",
-  Default = false,
-  Callback = function(v)
-_G.InfStamina = v
-end})
-Tabs.Main:AddCheckbox({
   Name = "Auto Pickup Items",
   Default = false,
   Callback = function(v)
@@ -102,11 +96,11 @@ if v2.Name == "Items" and v2:FindFirstChild("Medkit") then
 for _,v3 in ipairs(v2:GetChildren()) do
 if v3.Name == "Medkit" then
 if (Character.Head.Position - v3.Prompt.Position).Magnitude < 15 then
-Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+Character.Head.CFrame = v3.Prompt.CFrame
 wait()
 fireproximityprompt(v3.Prompt.ProximityPrompt)
 wait()
-Character.HumanoidRootPart.CFrame = OldPos
+Character.Head.CFrame = OldPos
 end
 end
 end
@@ -130,11 +124,11 @@ if v2.Name == "Items" and v2:FindFirstChild("Bandage") then
 for _,v3 in ipairs(v2:GetChildren()) do
 if v3.Name == "Bandage" then
 if (Character.Head.Position - v3.Prompt.Position).Magnitude < 15 then
-Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+Character.Head.CFrame = v3.Prompt.CFrame
 wait()
 fireproximityprompt(v3.Prompt.ProximityPrompt)
 wait()
-Character.HumanoidRootPart.CFrame = OldPos
+Character.Head.CFrame = OldPos
 end
 end
 end
