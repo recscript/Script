@@ -112,12 +112,12 @@ Tabs.Main:AddButton({
   Name = "Claim Medkit",
   Callback = function()
 _G.ClaimMedkit = true
-})
+end})
 Tabs.Main:AddButton({
   Name = "Claim Bandage",
   Callback = function()
 _G.ClaimBandage = true
-})
+end})
 Tabs.Main:AddSection({"Lighting"})
 Tabs.Main:AddCheckbox({
   Name = "Fullbright",
