@@ -9,13 +9,19 @@ end
 end
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdatbeo456-afk/Script/refs/heads/main/Redz"))()
 local Character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-local RP = workspace.InGamePlayers:FindFirstChild(game.Players.LocalPlayer.Name)
 local Window = Library:MakeWindow({
   Title = "Dandy's World",
   SubTitle = "v0.1",
   SaveFolder = "Redz | redz lib v5.lua"
 })
-
+local RP = workspace:FindFirstChild("InGamePlayers"):FindFirstChild(game.Players.LocalPlayer.Name)
+if not RP then
+Library:MakeNotification({
+Title = "Alert",
+Description = "Please Join Gameplay ❗",
+Duration = 5
+})
+end
 Window:AddMinimizeButton({
     Button = { Image = "", BackgroundTransparency = 0 },
     Corner = { CornerRadius = UDim.new(35, 1) },
@@ -259,7 +265,6 @@ game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
 game.Lighting.Brightness = 1
 end
 if _G.GodMode then
-local RP = workspace.InGamePlayers:FindFirstChild(game.Players.LocalPlayer.Name)
 if RP and RP:FindFirstChild("Head") and RP:FindFirstChild("RootPart") and RP:FindFirstChild("HumanoidRootPart") then
 local monsterClose = false
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
