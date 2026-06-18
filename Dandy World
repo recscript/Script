@@ -1,0 +1,166 @@
+local function Delete(args)
+local name = arg.Name
+local sure = arg.Sure
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name = name and sure then
+v:Destroy()
+end
+end
+end
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdatbeo456-afk/Script/refs/heads/main/Redz"))()
+local Window = Library:MakeWindow({
+  Title = "Dandy's World",
+  SubTitle = "v0.1",
+  SaveFolder = "Redz | redz lib v5.lua"
+})
+
+Window:AddMinimizeButton({
+    Button = { Image = "", BackgroundTransparency = 0 },
+    Corner = { CornerRadius = UDim.new(35, 1) },
+})
+
+local Tabs = {
+Main = Window:MakeTab({"Main", "home"})
+}
+
+Tabs.Main:AddSection({"ESP"})
+Tabs.Main:AddCheckbox({
+  Name = "Monsters ESP",
+  Default = false,
+  Callback = function(v)
+_G.MonstersESP = v
+if _G.MonstersESP == false then
+Delete({
+Name = "Monsters_ESP"
+Sure = true
+})
+end
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Generators ESP",
+  Default = false,
+  Callback = function(v)
+_G.GeneratorsESP = v
+if _G.GeneratorsESP == false then
+Delete({
+Name = "Generators_ESP"
+Sure = true
+})
+end
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Players ESP",
+  Default = false,
+  Callback = function(v)
+_G.PlayersESP = v
+if _G.PlayersESP == false then
+Delete({
+Name = "Players_ESP"
+Sure = true
+})
+end
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Items ESP",
+  Default = false,
+  Callback = function(v)
+_G.ItemsESP = v
+if _G.ItemsESP == false then
+Delete({
+Name = "Items_ESP"
+Sure = true
+})
+end
+end})
+Tabs.Main:AddSection({"Misc"})
+Tabs.Main:AddCheckbox({
+  Name = "Speed Boost",
+  Default = false,
+  Callback = function(v)
+_G.SpeedBoost = v
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Auto Pickup Items",
+  Default = false,
+  Callback = function(v)
+_G.AutoPickup = v
+end})
+local function Highlight(args)
+local v = args.Parent
+local title = args.Name
+local color = args.Color
+local highlight = v:FindFirstChild(title)
+if highlight then return end
+if not highlight then
+local Highlight = Instance.new("Highlight", v)
+Highlight.Name = title
+Highlight.FillTransparency = 1
+Highlight.OutlineColor = color
+end
+end
+game:GetService("RunService").Heartbeat:Connect(function()
+local Character = game:GetService("Players").LocalPlayer.Character
+if not Character then return end
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if _G.MonstersESP and v2.Name == "Monsters" then
+for _,v3 in ipairs(v2:GetChildren()) do
+Highlight({
+Parent = v3,
+Name = "Monsters_ESP",
+Color = Color3.fromRGB(255,0,0)
+})
+end
+end
+end
+end
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if _G.GeneratorsESP and v2.Name == "Generators" then
+for _,v3 in ipairs(v2:GetChildren()) do
+Highlight({
+Parent = v3,
+Name = "Generators_ESP",
+Color = Color3.fromRGB(0,0,255)
+})
+end
+end
+end
+end
+for _,v in ipairs(workspace.InGamePlayers:GetChildren()) do
+if _G.PlayersESP then
+Highlight({
+Parent = v,
+Name = "Players_ESP",
+Color = Color3.fromRGB(0,255,0)
+})
+end
+end
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if _G.ItemsESP and v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+Highlight({
+Parent = v3,
+Name = "Items_ESP",
+Color = Color3.fromRGB(255,255,0)
+})
+end
+end
+end
+end
+if _G.SpeedBoost then
+Character.Humanoid.WalkSpeed = 30
+end
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if _G.AutoPickup and v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 15 then
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+end
+end
+end
+end
+end
+end)
