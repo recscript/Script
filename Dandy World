@@ -95,31 +95,40 @@ Tabs.Main:AddCheckbox({
   Callback = function(v)
 _G.AutoPickup = v
 end})
+Tabs.Main:AddCheckbox({
+  Name = "God Mode",
+  Default = false,
+  Callback = function(v)
+_G.GodMode = v
+end})
 Tabs.Main:AddButton({
   Name = "Claim Medkit",
   Callback = function()
 if RP then
-local OldPos = RP.Head.CFrame
+local OldPos = RP.HumanoidRootPart.CFrame
+local foundMedkit = false
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
-if v2.Name == "Items" and v2:FindFirstChild("Medkit") then
+if v2.Name == "Items" then
 for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Medkit" then
-RP.Head.CFrame = v3.Prompt.CFrame
-wait()
+if v3.Name == "Medkit" and v3:FindFirstChild("Prompt") then
+foundMedkit = true
+RP.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
 fireproximityprompt(v3.Prompt.ProximityPrompt)
-wait()
-RP.Head.CFrame = OldPos
+task.wait(0.1)
+RP.HumanoidRootPart.CFrame = OldPos
 end
 end
-else
+end
+end
+end
+if not foundMedkit then
 Library:MakeNotification({
 Title = "Alert",
 Description = "❌ Not Found",
 Duration = 5
 })
-end
-end
 end
 end
 end})
@@ -127,27 +136,30 @@ Tabs.Main:AddButton({
   Name = "Claim Bandage",
   Callback = function()
 if RP then
-local OldPos = RP.Head.CFrame
+local OldPos = RP.HumanoidRootPart.CFrame
+local foundBandage = false
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
-if v2.Name == "Items" and v2:FindFirstChild("Bandage") then
+if v2.Name == "Items" then
 for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Bandage" then
-RP.Head.CFrame = v3.Prompt.CFrame
-wait()
+if v3.Name == "Bandage" and v3:FindFirstChild("Prompt") then
+foundBandage = true
+RP.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
 fireproximityprompt(v3.Prompt.ProximityPrompt)
-wait()
-RP.Head.CFrame = OldPos
+task.wait(0.1)
+RP.HumanoidRootPart.CFrame = OldPos
 end
 end
-else
+end
+end
+end
+if not foundBandage then
 Library:MakeNotification({
 Title = "Alert",
 Description = "❌ Not Found",
 Duration = 5
 })
-end
-end
 end
 end
 end})
@@ -246,26 +258,71 @@ game.Lighting.GlobalShadows = false
 game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
 game.Lighting.Brightness = 1
 end
-if _G.ClaimATandRC then
-if RP then
-local OldPos = RP.Head.CFrame
+if _G.GodMode then
+local RP = workspace.InGamePlayers:FindFirstChild(game.Players.LocalPlayer.Name)
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
-if v2.Name == "Items" and (v:FindFirstChild("Tape") or v:FindFirstChild("ResearchCapsule")) then
+if v2.Name == "Monsters" then
 for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Tape" then
-RP.Head.CFrame = v3.Prompt.CFrame
-fireproximityprompt(v3.Prompt.ProximityPrompt)
-elseif v3.Name == "ResearchCapsule" then
-RP.Head.CFrame = v3.Prompt.CFrame
-fireproximityprompt(v3.Prompt.ProximityPrompt)
+if (v3.Head.Position - RP.Head.Position).Magnitude < 20 then
+if RP:FindFirstChild("RootPart") then
+local rp = RP.RootPart:FindFirstChild("p_Hack")
+if not rp then
+rp = Instance.new("Part",RP.RootPart)
+rp.Name = "p_Hack"
+rp.CFrame = RP.RootPart.CFrame
+RP.HumanoidRootPart.CFrame = rp.CFrame - Vector3.new(0,15,0)
+local bv = Instance.new("BodyVelocity",RP.HumanoidRootPart)
+bv.Name = "p_Bv"
+bv.Velocity = Vector3.new(0,0,0)
+bv.MaxForce = Vector3.new(0,math.huge,0)
 end
+workspace.Gravity = 0
+game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
 end
 else
+if RP:FindFirstChild("RootPart") then
+local rp = RP.RootPart:FindFirstChild("p_Hack")
+if rp then
+local bv = RP.HumanoidRootPart:FindFirstChild("p_Bv")
+if bv then bv:Destroy() end
+workspace.Gravity = 196.2
+game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
+RP.HumanoidRootPart.CFrame = rp.CFrame
+rp:Destroy()
+end
+end
+end
+end
+end
+end
+end
+end
+end
+if _G.ClaimATandRC then
+if RP then
+local OldPos = RP.HumanoidRootPart.CFrame
+local foundItem = false
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Tape" or v3.Name == "ResearchCapsule" then
+if v3:FindFirstChild("Prompt") then
+foundItem = true
+RP.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+task.wait(0.1)
+end
+end
+end
+end
+end
+end
+if not foundItem then
 _G.ClaimATandRC = false
-RP.Head.CFrame = OldPos
-end
-end
+RP.HumanoidRootPart.CFrame = OldPos
 end
 end
 end
