@@ -108,6 +108,16 @@ Tabs.Main:AddCheckbox({
   Callback = function(v)
 _G.GodMode = v
 end})
+Tabs.Main:AddButton({
+  Name = "Claim Medkit",
+  Callback = function()
+_G.ClaimMedkit = true
+})
+Tabs.Main:AddButton({
+  Name = "Claim Bandage",
+  Callback = function()
+_G.ClaimBandage = true
+})
 Tabs.Main:AddSection({"Lighting"})
 Tabs.Main:AddCheckbox({
   Name = "Fullbright",
@@ -241,5 +251,65 @@ rp:Destroy()
 end
 end
 end
+end
+if _G.ClaimMedkit then
+local found = false
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Medkit" then
+if v3:FindFirstChild("Prompt") then
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 5000 then
+found = true
+Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+task.wait(0.1)
+end
+end
+end
+end
+end
+end
+end
+if not found then
+Library:MakeNotification({
+Title = "Alert",
+Description = "⭕ Not Found",
+Duration = 5
+})
+end
+_G.ClaimMedkit = false
+end
+if _G.ClaimBandage then
+local found = false
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Bandage" then
+if v3:FindFirstChild("Prompt") then
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 5000 then
+found = true
+Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+task.wait(0.1)
+end
+end
+end
+end
+end
+end
+end
+if not found then
+Library:MakeNotification({
+Title = "Alert",
+Description = "⭕ Not Found",
+Duration = 5
+})
+end
+_G.ClaimBandage = false
 end
 end)
