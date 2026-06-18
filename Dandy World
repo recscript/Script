@@ -80,6 +80,12 @@ Tabs.Main:AddCheckbox({
 _G.SpeedBoost = v
 end})
 Tabs.Main:AddCheckbox({
+  Name = "Inf Stamina",
+  Default = false,
+  Callback = function(v)
+_G.InfStamina = v
+end})
+Tabs.Main:AddCheckbox({
   Name = "Auto Pickup Items",
   Default = false,
   Callback = function(v)
@@ -174,5 +180,10 @@ if _G.Fullbright then
 game.Lighting.GlobalShadows = false
 game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
 game.Lighting.Brightness = 1
+end
+if _G.InfStamina then
+Character.Stats.CurrentStamina.Value = 9e999999999999999
+Character.Stats.Stamina.Value = 9e9999999999999999999999
+game.Players.LocalPlayer:SetAttribute("StaminaFatigued", false)
 end
 end)
