@@ -1,6 +1,6 @@
 local function Delete(args)
-local name = arg.Name
-local sure = arg.Sure
+local name = args.Name
+local sure = args.Sure
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == name and sure then
 v:Destroy()
@@ -8,6 +8,7 @@ end
 end
 end
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdatbeo456-afk/Script/refs/heads/main/Redz"))()
+local Character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
 local Window = Library:MakeWindow({
   Title = "Dandy's World",
   SubTitle = "v0.1",
@@ -90,6 +91,34 @@ Tabs.Main:AddCheckbox({
   Default = false,
   Callback = function(v)
 _G.AutoPickup = v
+end})
+Tabs.Main:AddButton({
+  Name = "Claim Medkit",
+  Callback = function()
+local OldPos = Character.HumanoidRootPart.CFrame
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" and v2:FindFirstChild("Medkit") then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Medkit" then
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 15 then
+Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+wait()
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+wait()
+Character.HumanoidRootPart.CFrame = OldPos
+end
+end
+end
+else
+Library:MakeNotification({
+Title = "Alert",
+Description = "❌ Not Found",
+Duration = 5
+})
+end
+end
+end
 end})
 Tabs.Main:AddSection({"Lighting"})
 Tabs.Main:AddCheckbox({
