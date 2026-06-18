@@ -235,7 +235,8 @@ local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if bv then bv:Destroy() end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
-Character.HumanoidRootPart.CFrame = rp.CFrame
+local currentPos = Character.HumanoidRootPart.Position
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
 rp:Destroy()
 end
 end
