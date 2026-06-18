@@ -260,12 +260,22 @@ game.Lighting.Brightness = 1
 end
 if _G.GodMode then
 local RP = workspace.InGamePlayers:FindFirstChild(game.Players.LocalPlayer.Name)
+if RP and RP:FindFirstChild("Head") and RP:FindFirstChild("RootPart") and RP:FindFirstChild("HumanoidRootPart") then
+local monsterClose = false
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "Monsters" then
 for _,v3 in ipairs(v2:GetChildren()) do
+if v3:FindFirstChild("Head") then
 if (v3.Head.Position - RP.Head.Position).Magnitude < 20 then
-if RP:FindFirstChild("RootPart") then
+monsterClose = true
+end
+end
+end
+end
+end
+end
+if monsterClose then
 local rp = RP.RootPart:FindFirstChild("p_Hack")
 if not rp then
 rp = Instance.new("Part",RP.RootPart)
@@ -279,9 +289,7 @@ bv.MaxForce = Vector3.new(0,math.huge,0)
 end
 workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
-end
 else
-if RP:FindFirstChild("RootPart") then
 local rp = RP.RootPart:FindFirstChild("p_Hack")
 if rp then
 local bv = RP.HumanoidRootPart:FindFirstChild("p_Bv")
@@ -290,11 +298,6 @@ workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 RP.HumanoidRootPart.CFrame = rp.CFrame
 rp:Destroy()
-end
-end
-end
-end
-end
 end
 end
 end
