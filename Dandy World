@@ -9,6 +9,7 @@ end
 end
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdatbeo456-afk/Script/refs/heads/main/Redz"))()
 local Character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local RP = workspace.InGamePlayers:FindFirstChild(game.Players.LocalPlayer.Name)
 local Window = Library:MakeWindow({
   Title = "Dandy's World",
   SubTitle = "v0.1",
@@ -23,6 +24,14 @@ Window:AddMinimizeButton({
 local Tabs = {
 Main = Window:MakeTab({"Main", "home"})
 }
+
+if game:GetService("ReplicatedStorage").Events:FindFirstChild("AntiCheatTrigger") then
+Library:MakeNotification({
+Title = "Alert",
+Description = "⭕ Anti Cheat Removed",
+Duration = 5
+})
+end
 
 Tabs.Main:AddSection({"ESP"})
 Tabs.Main:AddCheckbox({
@@ -89,17 +98,18 @@ end})
 Tabs.Main:AddButton({
   Name = "Claim Medkit",
   Callback = function()
-local OldPos = Character.Head.CFrame
+if RP then
+local OldPos = RP.Head.CFrame
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "Items" and v2:FindFirstChild("Medkit") then
 for _,v3 in ipairs(v2:GetChildren()) do
 if v3.Name == "Medkit" then
-Character.Head.CFrame = v3.Prompt.CFrame
+RP.Head.CFrame = v3.Prompt.CFrame
 wait()
 fireproximityprompt(v3.Prompt.ProximityPrompt)
 wait()
-Character.Head.CFrame = OldPos
+RP.Head.CFrame = OldPos
 end
 end
 else
@@ -108,6 +118,7 @@ Title = "Alert",
 Description = "❌ Not Found",
 Duration = 5
 })
+end
 end
 end
 end
@@ -115,17 +126,18 @@ end})
 Tabs.Main:AddButton({
   Name = "Claim Bandage",
   Callback = function()
-local OldPos = Character.Head.CFrame
+if RP then
+local OldPos = RP.Head.CFrame
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "Items" and v2:FindFirstChild("Bandage") then
 for _,v3 in ipairs(v2:GetChildren()) do
 if v3.Name == "Bandage" then
-Character.Head.CFrame = v3.Prompt.CFrame
+RP.Head.CFrame = v3.Prompt.CFrame
 wait()
 fireproximityprompt(v3.Prompt.ProximityPrompt)
 wait()
-Character.Head.CFrame = OldPos
+RP.Head.CFrame = OldPos
 end
 end
 else
@@ -137,6 +149,12 @@ Duration = 5
 end
 end
 end
+end
+end})
+Tabs.Main:AddButton({
+  Name = "Claim All Tape & Research Capsule",
+  Callback = function()
+_G.ClaimATandRC = true
 end})
 Tabs.Main:AddSection({"Lighting"})
 Tabs.Main:AddCheckbox({
@@ -227,5 +245,28 @@ if _G.Fullbright then
 game.Lighting.GlobalShadows = false
 game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
 game.Lighting.Brightness = 1
+end
+if _G.ClaimATandRC then
+if RP then
+local OldPos = RP.Head.CFrame
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" and (v:FindFirstChild("Tape") or v:FindFirstChild("ResearchCapsule")) then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Tape" then
+RP.Head.CFrame = v3.Prompt.CFrame
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+elseif v3.Name == "ResearchCapsule" then
+RP.Head.CFrame = v3.Prompt.CFrame
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+end
+end
+else
+_G.ClaimATandRC = false
+RP.Head.CFrame = OldPos
+end
+end
+end
+end
 end
 end)
