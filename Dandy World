@@ -2,7 +2,7 @@ local function Delete(args)
 local name = arg.Name
 local sure = arg.Sure
 for _,v in ipairs(workspace:GetDescendants()) do
-if v.Name = name and sure then
+if v.Name == name and sure then
 v:Destroy()
 end
 end
@@ -31,7 +31,7 @@ Tabs.Main:AddCheckbox({
 _G.MonstersESP = v
 if _G.MonstersESP == false then
 Delete({
-Name = "Monsters_ESP"
+Name = "Monsters_ESP",
 Sure = true
 })
 end
@@ -43,7 +43,7 @@ Tabs.Main:AddCheckbox({
 _G.GeneratorsESP = v
 if _G.GeneratorsESP == false then
 Delete({
-Name = "Generators_ESP"
+Name = "Generators_ESP",
 Sure = true
 })
 end
@@ -55,7 +55,7 @@ Tabs.Main:AddCheckbox({
 _G.PlayersESP = v
 if _G.PlayersESP == false then
 Delete({
-Name = "Players_ESP"
+Name = "Players_ESP",
 Sure = true
 })
 end
@@ -67,7 +67,7 @@ Tabs.Main:AddCheckbox({
 _G.ItemsESP = v
 if _G.ItemsESP == false then
 Delete({
-Name = "Items_ESP"
+Name = "Items_ESP",
 Sure = true
 })
 end
