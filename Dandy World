@@ -85,6 +85,13 @@ Tabs.Main:AddCheckbox({
   Callback = function(v)
 _G.AutoPickup = v
 end})
+Tabs.Main:AddSection({"Lighting"})
+Tabs.Main:AddCheckbox({
+  Name = "Fullbright",
+  Default = false,
+  Callback = function(v)
+_G.Fullbright = v
+end})
 local function Highlight(args)
 local v = args.Parent
 local title = args.Name
@@ -150,7 +157,7 @@ end
 end
 end
 if _G.SpeedBoost then
-Character.Humanoid.WalkSpeed = 30
+Character.Humanoid.WalkSpeed = 28
 end
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
@@ -162,5 +169,10 @@ end
 end
 end
 end
+end
+if _G.Fullbright then
+game.Lighting.GlobalShadows = false
+game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
+game.Lighting.Brightness = 1
 end
 end)
