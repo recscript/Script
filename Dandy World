@@ -303,7 +303,7 @@ elevatorCheck = true
 end
 end)
 local nearElevator = false
-if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 20 then
+if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 25 then
 nearElevator = true
 end
 if not nearElevator then
