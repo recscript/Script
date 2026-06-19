@@ -305,7 +305,7 @@ bv.MaxForce = Vector3.new(0,math.huge,0)
 end
 workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
-Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 5, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
+Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 10, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
 if up then
 local rp = Character.RootPart:FindFirstChild("p_Hack")
@@ -315,7 +315,7 @@ if bv then bv:Destroy() end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
-Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation - Vector3.new(0,-5,0)
 rp:Destroy()
 up = false
 end
