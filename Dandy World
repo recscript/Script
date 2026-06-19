@@ -126,7 +126,7 @@ ScreenGui.ResetOnSpawn = true
 ScreenGui.Parent = game.CoreGui
 
 local Button = Instance.new("TextButton")
-Button.Size = UDim2.new(0, 70, 0, 70)
+Button.Size = UDim2.new(0, 80, 0, 50)
 Button.Position = UDim2.new(0.85, 0, 0, 10)
 Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
 Button.BackgroundTransparency = 0
@@ -137,7 +137,7 @@ Button.TextSize = 20
 Button.Parent = ScreenGui
 
 local Shadow = Instance.new("Frame")
-Shadow.Size = UDim2.new(0, 70, 0, 70)
+Shadow.Size = UDim2.new(0, 80, 0, 50)
 Shadow.Position = UDim2.new(0, 0, 0, 0)
 Shadow.BackgroundTransparency = 1
 Shadow.Parent = Button
@@ -187,9 +187,7 @@ if bv then bv:Destroy() end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
-Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation - Vector3.new(0,-10,0)
-end
-end
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
 end
 end
 end)
