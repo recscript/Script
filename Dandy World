@@ -155,8 +155,8 @@ UIStrokeShadow.Parent = Shadow
 game:GetService("RunService").RenderStepped:Connect(function()
 UIStrokeShadow.Color = Color3.fromRGB(30,30,30)
 Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
-Shadow.Size = UDim2.new(0, 70, 0, 70)
-Button.Size = UDim2.new(0, 70, 0, 70)
+Shadow.Size = UDim2.new(0, 120, 0, 50)
+Button.Size = UDim2.new(0, 120, 0, 50)
 end)
 local t = false
 Button.MouseButton1Click:Connect(function()
@@ -293,27 +293,32 @@ end
 up = true
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if not rp then
-rp = Instance.new("Part",Character.RootPart)
+rp = Instance.new("Part", Character.RootPart)
 rp.Name = "p_Hack"
 rp.Transparency = 1
 rp.CFrame = Character.RootPart.CFrame
 end
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if not bv then
-bv = Instance.new("BodyVelocity",Character.HumanoidRootPart)
+bv = Instance.new("BodyVelocity", Character.HumanoidRootPart)
 bv.Name = "p_Bv"
 bv.Velocity = Vector3.new(0,0,0)
 bv.MaxForce = Vector3.new(0,math.huge,0)
 end
 workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
-Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 10, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
+Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 5, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
 if up then
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if bv then bv:Destroy() end
+for _, part in pairs(Character:GetChildren()) do
+if part:IsA("BasePart") then
+part.CanCollide = true
+end
+end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
@@ -326,12 +331,16 @@ end
 end
 else
 if up then
-local Character = Player.Character
 if Character and Character:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("RootPart") then
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if bv then bv:Destroy() end
+for _, part in pairs(Character:GetChildren()) do
+if part:IsA("BasePart") then
+part.CanCollide = true
+end
+end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
