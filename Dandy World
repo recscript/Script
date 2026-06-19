@@ -285,6 +285,11 @@ if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Bas
 nearElevator = true
 end
 if not nearElevator then
+for _, part in pairs(Character:GetChildren()) do
+if part:IsA("BasePart") then
+part.CanCollide = false
+end
+end
 up = true
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if not rp then
@@ -295,11 +300,12 @@ rp.CFrame = Character.RootPart.CFrame
 end
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if not bv then
-bv = Instance.new("BodyPosition",Character.HumanoidRootPart)
+bv = Instance.new("BodyVelocity",Character.HumanoidRootPart)
 bv.Name = "p_Bv"
+bv.Velocity = Vector3.new(0,0,0)
 bv.MaxForce = Vector3.new(0,math.huge,0)
 end
-bv.Position = Vector3.new(0, rp.Position.Y - 10, 0)
+workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
 Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 10, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
@@ -308,6 +314,7 @@ local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if bv then bv:Destroy() end
+workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
 Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
@@ -325,6 +332,7 @@ local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if bv then bv:Destroy() end
+workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
 Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
@@ -397,6 +405,6 @@ end
 if _G.HipHeight then
 Character.Humanoid.HipHeight = 16.5
 else
-Character.Humanoid.HipHeight = 3
+Character.Humanoid.HipHeight = 1
 end
 end)
