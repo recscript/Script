@@ -384,8 +384,8 @@ end
 _G.ClaimBandage = false
 end
 if _G.HipHeight then
-Char.Humanoid.HipHeight = 16.5
+Character.Humanoid.HipHeight = 16.5
 else
-Char.Humanoid.HipHeight = 0
+Character.Humanoid.HipHeight = 0
 end
 end)
