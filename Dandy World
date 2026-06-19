@@ -187,12 +187,7 @@ Tabs.Main:AddCheckbox({
   Callback = function(v)
 _G.Fullbright = v
 end})
-Tabs.Main:AddCheckbox({
-  Name = "Maxium Size Gold Area",
-  Default = false,
-  Callback = function(v)
-_G.MaxiumSizeGoldArea = v
-end})
+
 local function Highlight(args)
 local v = args.Parent
 local title = args.Name
@@ -279,21 +274,17 @@ game.Lighting.Brightness = 1
 end
 if _G.GodMode then
 if Character and Character:FindFirstChild("Head") and Character:FindFirstChild("RootPart") and Character:FindFirstChild("HumanoidRootPart") then
-local monsterClose = false
-for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
-for _,v2 in ipairs(v:GetChildren()) do
-if v2.Name == "Monsters" then
-for _,v3 in ipairs(v2:GetChildren()) do
-if v3:FindFirstChild("Head") then
-if (v3.Head.Position - Character.Head.Position).Magnitude < (_G.DistanceGodMode or 50) then
-monsterClose = true
+local elevatorCheck = false
+pcall(function()
+if workspace.Elevators.Elevator.Base then
+elevatorCheck = true
 end
+end)
+local nearElevator = false
+if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 15 then
+nearElevator = true
 end
-end
-end
-end
-end
-if monsterClose then
+if not nearElevator then
 up = true
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if not rp then
@@ -304,12 +295,11 @@ rp.CFrame = Character.RootPart.CFrame
 end
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if not bv then
-bv = Instance.new("BodyVelocity",Character.HumanoidRootPart)
+bv = Instance.new("BodyPosition",Character.HumanoidRootPart)
 bv.Name = "p_Bv"
-bv.Velocity = Vector3.new(0,0,0)
 bv.MaxForce = Vector3.new(0,math.huge,0)
 end
-workspace.Gravity = 0
+bv.Position = Vector3.new(0, rp.Position.Y - 10, 0)
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
 Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 10, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
@@ -318,13 +308,28 @@ local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
 if bv then bv:Destroy() end
-workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
-Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation - Vector3.new(0,-5,0)
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
 rp:Destroy()
 up = false
 end
+end
+end
+end
+else
+if up then
+local Character = Player.Character
+if Character and Character:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("RootPart") then
+local rp = Character.RootPart:FindFirstChild("p_Hack")
+if rp then
+local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
+if bv then bv:Destroy() end
+game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
+local currentPos = Character.HumanoidRootPart.Position
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
+rp:Destroy()
+up = false
 end
 end
 end
@@ -392,9 +397,6 @@ end
 if _G.HipHeight then
 Character.Humanoid.HipHeight = 16.5
 else
-Character.Humanoid.HipHeight = 0
-end
-if _G.MaxiumSizeGoldArea then
-game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menu.SkillCheckFrame.GoldArea.Size = UDim2.new(1,0,1,0)
+Character.Humanoid.HipHeight = 3
 end
 end)
