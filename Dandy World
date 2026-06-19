@@ -38,6 +38,7 @@ Title = "Alert",
 Description = "⭕ Anti Cheat Removed",
 Duration = 5
 })
+game:GetService("ReplicatedStorage").Events:FindFirstChild("AntiCheatTrigger"):Destroy()
 end
 
 Tabs.Main:AddSection({"ESP"})
