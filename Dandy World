@@ -8,7 +8,7 @@ end
 end
 end
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdatbeo456-afk/Script/refs/heads/main/Redz"))()
-local Character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local Character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
 local IGP = workspace:FindFirstChild("InGamePlayers")
 if not IGP then
 Library:MakeNotification({
@@ -97,16 +97,102 @@ Tabs.Main:AddCheckbox({
 _G.SpeedBoost = v
 end})
 Tabs.Main:AddCheckbox({
-  Name = "Auto Pickup Items",
+  Name = "Auto Pickup",
   Default = false,
   Callback = function(v)
 _G.AutoPickup = v
+end})
+Tabs.Setting:AddSlider({
+  Name = "Distance Check",
+  Min = 20,
+  Max = 100,
+  Increase = 1,
+  Default = 50,
+  Callback = function(v)
+_G.DistanceGodMode = v
 end})
 Tabs.Main:AddCheckbox({
   Name = "God Mode",
   Default = false,
   Callback = function(v)
 _G.GodMode = v
+end})
+Tabs.Main:AddButton({
+  Name = "God Mode Button",
+  Callback = function()
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Godmode_Button"
+ScreenGui.ResetOnSpawn = true
+ScreenGui.Parent = game.CoreGui
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0, 70, 0, 70)
+Button.Position = UDim2.new(0.85, 0, 0, 10)
+Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Button.BackgroundTransparency = 0
+Button.Text = "Godmode : false"
+Button.TextColor3 = Color3.new(1,1,1)
+Button.Font = "SourceSansBold"
+Button.TextSize = 20
+Button.Parent = ScreenGui
+
+local Shadow = Instance.new("Frame")
+Shadow.Size = UDim2.new(0, 70, 0, 70)
+Shadow.Position = UDim2.new(0, 0, 0, 0)
+Shadow.BackgroundTransparency = 1
+Shadow.Parent = Button
+
+local uc = Instance.new("UICorner", Shadow)
+local uc2 = Instance.new("UICorner", Button)
+
+local UIStrokeShadow = Instance.new("UIStroke")
+UIStrokeShadow.Color = Color3.fromRGB(30,30,30)
+UIStrokeShadow.Thickness = 3
+UIStrokeShadow.Transparency = 0
+UIStrokeShadow.Parent = Shadow
+
+game:GetService("RunService").RenderStepped:Connect(function()
+UIStrokeShadow.Color = Color3.fromRGB(30,30,30)
+Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Shadow.Size = UDim2.new(0, 70, 0, 70)
+Button.Size = UDim2.new(0, 70, 0, 70)
+end)
+local t = false
+Button.MouseButton1Click:Connect(function()
+t = not t
+if t then
+Button.Text = "Godmode : true"
+local rp = Character.RootPart:FindFirstChild("p_Hack")
+if not rp then
+rp = Instance.new("Part",Character.RootPart)
+rp.Name = "p_Hack"
+rp.CFrame = Character.RootPart.CFrame
+end
+local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
+if not bv then
+bv = Instance.new("BodyVelocity",Character.HumanoidRootPart)
+bv.Name = "p_Bv"
+bv.Velocity = Vector3.new(0,0,0)
+bv.MaxForce = Vector3.new(0,math.huge,0)
+end
+workspace.Gravity = 0
+game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
+Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 5, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
+else
+Button.Text = "Godmode : false"
+local rp = Character.RootPart:FindFirstChild("p_Hack")
+if rp then
+local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
+if bv then bv:Destroy() end
+workspace.Gravity = 196.2
+game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
+local currentPos = Character.HumanoidRootPart.Position
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation - Vector3.new(0,-10,0)
+end
+end
+end
+end
+end)
 end})
 Tabs.Main:AddButton({
   Name = "Claim Medkit",
@@ -216,7 +302,7 @@ for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "Monsters" then
 for _,v3 in ipairs(v2:GetChildren()) do
 if v3:FindFirstChild("Head") then
-if (v3.Head.Position - Character.Head.Position).Magnitude < 50 then
+if (v3.Head.Position - Character.Head.Position).Magnitude < (_G.DistanceGodMode or 50) then
 monsterClose = true
 end
 end
@@ -240,7 +326,7 @@ bv.MaxForce = Vector3.new(0,math.huge,0)
 end
 workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
-Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 10, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
+Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 5, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
@@ -249,7 +335,7 @@ if bv then bv:Destroy() end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
-Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation - Vector3.new(0,-10,0)
 end
 end
 end
