@@ -166,6 +166,7 @@ local rp = Character.RootPart:FindFirstChild("p_Hack")
 if not rp then
 rp = Instance.new("Part",Character.RootPart)
 rp.Name = "p_Hack"
+rp.Transparency = 1
 rp.CFrame = Character.RootPart.CFrame
 end
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
@@ -313,6 +314,7 @@ local rp = Character.RootPart:FindFirstChild("p_Hack")
 if not rp then
 rp = Instance.new("Part",Character.RootPart)
 rp.Name = "p_Hack"
+rp.Transparency = 1
 rp.CFrame = Character.RootPart.CFrame
 end
 local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
