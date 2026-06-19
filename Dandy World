@@ -180,6 +180,11 @@ Tabs.Main:AddButton({
   Callback = function()
 _G.ClaimBandage = true
 end})
+Tabs.Main:AddButton({
+  Name = "Claim All Resoure Capsule & Tapes",
+  Callback = function()
+_G.ClaimAllRCT = true
+end})
 Tabs.Main:AddSection({"Misc"})
 Tabs.Main:AddCheckbox({
   Name = "Fullbright",
@@ -375,7 +380,7 @@ end
 if not found then
 Library:MakeNotification({
 Title = "Alert",
-Description = "⭕ Not Found",
+Description = "❌ Not Found",
 Duration = 5
 })
 end
@@ -405,11 +410,36 @@ end
 if not found then
 Library:MakeNotification({
 Title = "Alert",
-Description = "⭕ Not Found",
+Description = "❌ Not Found",
 Duration = 5
 })
 end
 _G.ClaimBandage = false
+end
+if _G.ClaimAllRCT then
+local found = false
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Tape" or v3.Name == "ResourceCapsule" then
+if v3:FindFirstChild("Prompt") then
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 5000 then
+found = true
+Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+task.wait(0.1)
+end
+end
+end
+end
+end
+end
+end
+if not found then
+_G.ClaimAllRCT = false
+end
 end
 if _G.HipHeight then
 Character.Humanoid.HipHeight = 16.5
