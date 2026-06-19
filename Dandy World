@@ -230,14 +230,17 @@ if not rp then
 rp = Instance.new("Part",Character.RootPart)
 rp.Name = "p_Hack"
 rp.CFrame = Character.RootPart.CFrame
-Character.HumanoidRootPart.CFrame = rp.CFrame - Vector3.new(0,10,0)
-local bv = Instance.new("BodyVelocity",Character.HumanoidRootPart)
+end
+local bv = Character.HumanoidRootPart:FindFirstChild("p_Bv")
+if not bv then
+bv = Instance.new("BodyVelocity",Character.HumanoidRootPart)
 bv.Name = "p_Bv"
 bv.Velocity = Vector3.new(0,0,0)
 bv.MaxForce = Vector3.new(0,math.huge,0)
 end
 workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
+Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 10, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
 local rp = Character.RootPart:FindFirstChild("p_Hack")
 if rp then
@@ -246,8 +249,7 @@ if bv then bv:Destroy() end
 workspace.Gravity = 196.2
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 local currentPos = Character.HumanoidRootPart.Position
-Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation - Vector3.new(0,-10,0)
-rp:Destroy()
+Character.HumanoidRootPart.CFrame = CFrame.new(currentPos.X, rp.Position.Y, currentPos.Z) * Character.HumanoidRootPart.CFrame.Rotation
 end
 end
 end
