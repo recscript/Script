@@ -103,6 +103,12 @@ Tabs.Main:AddCheckbox({
   Callback = function(v)
 _G.AutoPickup = v
 end})
+Tabs.Main:AddCheckbox({
+  Name = "Auto Elevator",
+  Default = false,
+  Callback = function(v)
+_G.AutoElevator = v
+end})
 Tabs.Main:AddSlider({
   Name = "Distance Check",
   Min = 20,
@@ -128,7 +134,7 @@ ScreenGui.Parent = game.CoreGui
 
 local Button = Instance.new("TextButton")
 Button.Size = UDim2.new(0, 120, 0, 50)
-Button.Position = UDim2.new(0.85, 0, 0, 10)
+Button.Position = UDim2.new(0.725, 0, 0, 10)
 Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
 Button.BackgroundTransparency = 0
 Button.Text = "Godmode : false"
@@ -181,7 +187,7 @@ Tabs.Main:AddButton({
 _G.ClaimBandage = true
 end})
 Tabs.Main:AddButton({
-  Name = "Claim All Resoure Capsule & Tapes",
+  Name = "Claim All Research Capsule & Tapes",
   Callback = function()
 _G.ClaimAllRCT = true
 end})
@@ -210,6 +216,17 @@ local up = false
 game:GetService("RunService").Heartbeat:Connect(function()
 local Character = game:GetService("Players").LocalPlayer.Character
 if not Character then return end
+if _G.AutoElevator then
+if game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menu.GeneratorFrame.CurrentAmount.Size == UDim2.new(1,0,1,0) then
+local nearElevator = false
+if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 20 then
+nearElevator = true
+end
+if not nearElevator then
+Character.HumanoidRootPart.CFrame = workspace.Elevators.Elevator.Base.CFrame
+end
+end
+end
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
 if _G.MonstersESP and v2.Name == "Monsters" then
@@ -286,7 +303,7 @@ elevatorCheck = true
 end
 end)
 local nearElevator = false
-if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 15 then
+if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 20 then
 nearElevator = true
 end
 if not nearElevator then
@@ -312,7 +329,7 @@ bv.MaxForce = Vector3.new(0,math.huge,0)
 end
 workspace.Gravity = 0
 game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
-Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 8, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
+Character.HumanoidRootPart.CFrame = CFrame.new(Character.HumanoidRootPart.Position.X, rp.Position.Y - 6, Character.HumanoidRootPart.Position.Z) * Character.HumanoidRootPart.CFrame.Rotation
 else
 if up then
 local rp = Character.RootPart:FindFirstChild("p_Hack")
@@ -418,11 +435,18 @@ _G.ClaimBandage = false
 end
 if _G.ClaimAllRCT then
 local found = false
+local rp = Character.RootPart:FindFirstChild("oldpos_Hack")
+if not rp then
+rp = Instance.new("Part", Character.RootPart)
+rp.Name = "oldpos_Hack"
+rp.Transparency = 1
+rp.CFrame = Character.RootPart.CFrame
+end
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "Items" then
 for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Tape" or v3.Name == "ResourceCapsule" then
+if v3.Name == "Tape" or v3.Name == "ResearchCapsule" then
 if v3:FindFirstChild("Prompt") then
 if (Character.Head.Position - v3.Prompt.Position).Magnitude < 5000 then
 found = true
@@ -438,6 +462,8 @@ end
 end
 end
 if not found then
+Character.HumanoidRootPart.CFrame = rp.CFrame
+if rp then rp:Destroy() end
 _G.ClaimAllRCT = false
 end
 end
