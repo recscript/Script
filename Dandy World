@@ -180,12 +180,18 @@ Tabs.Main:AddButton({
   Callback = function()
 _G.ClaimBandage = true
 end})
-Tabs.Main:AddSection({"Lighting"})
+Tabs.Main:AddSection({"Misc"})
 Tabs.Main:AddCheckbox({
   Name = "Fullbright",
   Default = false,
   Callback = function(v)
 _G.Fullbright = v
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Maxium Size Gold Area",
+  Default = false,
+  Callback = function(v)
+_G.MaxiumSizeGoldArea = v
 end})
 local function Highlight(args)
 local v = args.Parent
@@ -387,5 +393,8 @@ if _G.HipHeight then
 Character.Humanoid.HipHeight = 16.5
 else
 Character.Humanoid.HipHeight = 0
+end
+if _G.MaxiumSizeGoldArea then
+game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menu.SkillCheckFrame.GoldArea.Size = UDim2.new(1,0,1,0)
 end
 end)
