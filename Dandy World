@@ -91,6 +91,15 @@ Sure = true
 end
 end})
 Tabs.Main:AddSection({"Misc"})
+Tabs.Main:AddSlider({
+  Name = "Sprint Speed",
+  Min = 16,
+  Max = 50,
+  Increase = 1,
+  Default = 16,
+  Callback = function(v)
+_G.SprintSpeed = v
+end})
 Tabs.Main:AddCheckbox({
   Name = "Speed Boost",
   Default = false,
@@ -108,15 +117,6 @@ Tabs.Main:AddCheckbox({
   Default = false,
   Callback = function(v)
 _G.AutoElevator = v
-end})
-Tabs.Main:AddSlider({
-  Name = "Distance Check",
-  Min = 20,
-  Max = 100,
-  Increase = 1,
-  Default = 50,
-  Callback = function(v)
-_G.DistanceGodMode = v
 end})
 Tabs.Main:AddCheckbox({
   Name = "God Mode",
@@ -177,9 +177,9 @@ end
 end)
 end})
 Tabs.Main:AddButton({
-  Name = "Claim Medkit",
+  Name = "Claim Health Kit",
   Callback = function()
-_G.ClaimMedkit = true
+_G.ClaimHealthKit = true
 end})
 Tabs.Main:AddButton({
   Name = "Claim Bandage",
@@ -219,7 +219,7 @@ if not Character then return end
 if _G.AutoElevator then
 if game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menu.GeneratorFrame.CurrentAmount.Size == UDim2.new(1,0,1,0) then
 local nearElevator = false
-if elevatorCheck and (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 20 then
+if (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 20 then
 nearElevator = true
 end
 if not nearElevator then
@@ -276,7 +276,7 @@ end
 end
 end
 if _G.SpeedBoost then
-Character.Humanoid.WalkSpeed = 28
+Character.Humanoid.WalkSpeed = _G.SprintSpeed or 16
 end
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
@@ -373,13 +373,13 @@ end
 end
 end
 end
-if _G.ClaimMedkit then
+if _G.ClaimHealthKit then
 local found = false
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "Items" then
 for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Medkit" then
+if v3.Name == "HealthKit" then
 if v3:FindFirstChild("Prompt") then
 if (Character.Head.Position - v3.Prompt.Position).Magnitude < 5000 then
 found = true
@@ -401,7 +401,7 @@ Description = "❌ Not Found",
 Duration = 5
 })
 end
-_G.ClaimMedkit = false
+_G.ClaimHealthKit = false
 end
 if _G.ClaimBandage then
 local found = false
