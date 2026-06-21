@@ -137,7 +137,6 @@ end})
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "Godmode_Button"
 ScreenGui.ResetOnSpawn = true
-ScreenGui.Enabled = _G.GodmodeButton
 ScreenGui.Parent = game.CoreGui
 
 local Button = Instance.new("TextButton")
@@ -531,5 +530,5 @@ end
 if _G.RemovePopup then
 game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.PopUp.Visible = false
 end
-
+ScreenGui.Enabled = _G.GodmodeButton
 end)
