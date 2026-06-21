@@ -128,6 +128,12 @@ Tabs.Main:AddCheckbox({
   Callback = function(v)
 _G.GodMode = v
 end})
+Tabs.Main:AddCheckbox({
+  Name = "God Mode Button",
+  Default = false,
+  Callback = function(v)
+_G.GodmodeButton = v
+end})
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "Godmode_Button"
 ScreenGui.ResetOnSpawn = true
@@ -177,12 +183,6 @@ Button.Text = "Godmode : false"
 _G.HipHeight = false
 end
 end)
-Tabs.Main:AddCheckbox({
-  Name = "God Mode Button",
-  Default = false,
-  Callback = function(v)
-_G.GodmodeButton = v
-end})
 Tabs.Main:AddButton({
   Name = "Claim Health Kit",
   Callback = function()
