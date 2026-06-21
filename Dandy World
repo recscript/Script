@@ -94,7 +94,16 @@ Sure = true
 })
 end
 end})
-Tabs.Main:AddSection({"Misc"})
+Tabs.Main:AddSection({"LocalPlayer"})
+Tabs.Main:AddSlider({
+  Name = "Fly Speed",
+  Min = 16,
+  Max = 50,
+  Increase = 1,
+  Default = 16,
+  Callback = function(v)
+_G.FlySpeed = v
+end})
 Tabs.Main:AddSlider({
   Name = "Sprint Speed",
   Min = 16,
@@ -103,6 +112,12 @@ Tabs.Main:AddSlider({
   Default = 16,
   Callback = function(v)
 _G.SprintSpeed = v
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Fly",
+  Default = false,
+  Callback = function(v)
+_G.Fly = v
 end})
 Tabs.Main:AddCheckbox({
   Name = "Speed Boost",
@@ -123,10 +138,10 @@ Tabs.Main:AddCheckbox({
 _G.AutoElevator = v
 end})
 Tabs.Main:AddCheckbox({
-  Name = "God Mode",
+  Name = "Noclip",
   Default = false,
   Callback = function(v)
-_G.GodMode = v
+_G.Noclip = v
 end})
 Tabs.Main:AddCheckbox({
   Name = "God Mode Button",
@@ -529,6 +544,54 @@ Character.Humanoid.HipHeight = 1.3
 end
 if _G.RemovePopup then
 game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.PopUp.Visible = false
+end
+if _G.Fly then
+if Character and Character:FindFirstChildOfClass("Humanoid") and Character.Humanoid.RootPart and Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+Character.Humanoid.PlatformStand = true
+Character.HumanoidRootPart.GyroHandler.CFrame = Workspace.CurrentCamera.CoordinateFrame
+Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X > 0 then
+Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeed or 16)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X < 0 then
+Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeed or 16)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z > 0 then
+Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeed or 16)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z < 0 then
+Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeed or 16)
+end
+elseif Character and Character:FindFirstChildOfClass("Humanoid") and Character.Humanoid.RootPart and Character.HumanoidRootPart:FindFirstChild("VelocityHandler") == nil and Character.HumanoidRootPart:FindFirstChild("GyroHandler") == nil then
+local bv = Instance.new("BodyVelocity")
+local bg = Instance.new("BodyGyro")
+
+bv.Name = "VelocityHandler"
+bv.Parent = Character.HumanoidRootPart
+bv.MaxForce = Vector3.new(0,0,0)
+bv.Velocity = Vector3.new(0,0,0)
+
+bg.Name = "GyroHandler"
+bg.Parent = Character.HumanoidRootPart
+bg.MaxTorque = Vector3.new(0,0,0)
+bg.P = 1000
+bg.D = 50
+end
+else
+if Character and Character:FindFirstChildOfClass("Humanoid") and Character.Humanoid.RootPart and Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+Character.HumanoidRootPart.VelocityHandler:Destroy()
+Character.HumanoidRootPart.GyroHandler:Destroy()
+Character.Humanoid.PlatformStand = false
+end
+end
+if _G.Noclip then
+for _, v in pairs(Character:GetChildren()) do
+if v:IsA("BasePart") then
+v.CanCollide = false
+end
+end
 end
 ScreenGui.Enabled = _G.GodmodeButton
 end)
