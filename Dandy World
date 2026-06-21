@@ -17,6 +17,10 @@ Description = "Please Join Gameplay ❗",
 Duration = 5
 })
 end
+Library:MakeLoading({
+Title = "Dandy Wolrd",
+Duration = 3
+})
 local RP = IGP:FindFirstChild(game.Players.LocalPlayer.Name)
 local Window = Library:MakeWindow({
   Title = "Dandy's World",
