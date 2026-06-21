@@ -1,4 +1,3 @@
-if not game.Players.LocalPlayer.Name == "hehehuhu_401" then
 local function Delete(args)
 local name = args.Name
 local sure = args.Sure
@@ -158,10 +157,10 @@ UIStrokeShadow.Transparency = 0
 UIStrokeShadow.Parent = Shadow
 
 game:GetService("RunService").RenderStepped:Connect(function()
-UIStrokeShadow.Color = Color3.fromRGB(30,30,30)
+UIStrokeShadow.Color = Color3.fromRGB(255,0,0)
 Button.BackgroundColor3 = Color3.fromRGB(0,0,0)
-Shadow.Size = UDim2.new(0, 120, 0, 50)
-Button.Size = UDim2.new(0, 120, 0, 50)
+Shadow.Size = UDim2.new(0, 130, 0, 50)
+Button.Size = UDim2.new(0, 130, 0, 50)
 end)
 local t = false
 Button.MouseButton1Click:Connect(function()
@@ -191,6 +190,11 @@ Tabs.Main:AddButton({
 _G.ClaimBandage = true
 end})
 Tabs.Main:AddButton({
+  Name = "Claim Jumper Cable",
+  Callback = function()
+_G.ClaimJumperCable = true
+end})
+Tabs.Main:AddButton({
   Name = "Claim All Research Capsule & Tapes",
   Callback = function()
 _G.ClaimAllRCT = true
@@ -201,6 +205,12 @@ Tabs.Main:AddCheckbox({
   Default = false,
   Callback = function(v)
 _G.Fullbright = v
+end})
+Tabs.Main:AddCheckbox({
+  Name = "Remove Popup",
+  Default = false,
+  Callback = function(v)
+_G.RemovePopup = v
 end})
 
 local function Highlight(args)
@@ -437,6 +447,36 @@ Duration = 5
 end
 _G.ClaimBandage = false
 end
+if _G.ClaimJumperCable then
+local found = false
+for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "Items" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "JumperCable" then
+if v3:FindFirstChild("Prompt") then
+if (Character.Head.Position - v3.Prompt.Position).Magnitude < 5000 then
+found = true
+Character.HumanoidRootPart.CFrame = v3.Prompt.CFrame
+task.wait(0.1)
+fireproximityprompt(v3.Prompt.ProximityPrompt)
+task.wait(0.1)
+end
+end
+end
+end
+end
+end
+end
+if not found then
+Library:MakeNotification({
+Title = "Alert",
+Description = "❌ Not Found",
+Duration = 5
+})
+end
+_G.ClaimJumperCable = false
+end
 if _G.ClaimAllRCT then
 local found = false
 local rp = Character.RootPart:FindFirstChild("oldpos_Hack")
@@ -484,5 +524,8 @@ end
 else
 Character.Humanoid.HipHeight = 1.3
 end
-end)
+if _G.RemovePopup then
+game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.PopUp.Visible = false
 end
+
+end)
