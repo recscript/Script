@@ -7,7 +7,7 @@ v:Destroy()
 end
 end
 end
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/thanhdatbeo456-afk/Script/refs/heads/main/Redz"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/recscript/Library/refs/heads/main/Redz"))()
 local Character = game:GetService("Players").LocalPlayer.Character
 local IGP = workspace:FindFirstChild("InGamePlayers")
 if not IGP then
