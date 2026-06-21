@@ -468,8 +468,14 @@ _G.ClaimAllRCT = false
 end
 end
 if _G.HipHeight then
+local nearElevator = false
+if (Character.Head.Position - workspace.Elevators.Elevator.Base.Position).Magnitude <= 20 then
+nearElevator = true
+end
+if not nearElevator then
 Character.Humanoid.HipHeight = 16.5
 else
-Character.Humanoid.HipHeight = 1.05
+Character.Humanoid.HipHeight = 1.3
+end
 end
 end)
