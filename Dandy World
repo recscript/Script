@@ -1,3 +1,4 @@
+if not game.Players.LocalPlayer.Name == "hehehuhu_401" then
 local function Delete(args)
 local name = args.Name
 local sure = args.Sure
@@ -484,3 +485,4 @@ else
 Character.Humanoid.HipHeight = 1.3
 end
 end)
+end
