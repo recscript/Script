@@ -592,5 +592,4 @@ end
 end
 end
 ScreenGui.Enabled = _G.GodmodeButton
-
 end)
