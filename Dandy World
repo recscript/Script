@@ -96,15 +96,6 @@ end
 end})
 Tabs.Main:AddSection({"LocalPlayer"})
 Tabs.Main:AddSlider({
-  Name = "Fly Speed",
-  Min = 16,
-  Max = 50,
-  Increase = 1,
-  Default = 16,
-  Callback = function(v)
-_G.FlySpeed = v
-end})
-Tabs.Main:AddSlider({
   Name = "Sprint Speed",
   Min = 16,
   Max = 50,
@@ -112,12 +103,6 @@ Tabs.Main:AddSlider({
   Default = 16,
   Callback = function(v)
 _G.SprintSpeed = v
-end})
-Tabs.Main:AddCheckbox({
-  Name = "Fly",
-  Default = false,
-  Callback = function(v)
-_G.Fly = v
 end})
 Tabs.Main:AddCheckbox({
   Name = "Speed Boost",
@@ -225,10 +210,10 @@ Tabs.Main:AddCheckbox({
 _G.Fullbright = v
 end})
 Tabs.Main:AddCheckbox({
-  Name = "Remove Popup",
+  Name = "Auto Skillcheck",
   Default = false,
   Callback = function(v)
-_G.RemovePopup = v
+_G.AutoSkillcheck = v
 end})
 
 local function Highlight(args)
@@ -244,10 +229,67 @@ Highlight.FillTransparency = 1
 Highlight.OutlineColor = color
 end
 end
+local Players = game:GetService("Players")
+local VIM = game:GetService("VirtualInputManager")
+
+local PlayerGui = Players.LocalPlayer.PlayerGui
+local ClickedSlider, ClickedCircle = false, false
+local currentTouchId = 1
+local ScreenGui = Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui")
+if not ScreenGui then
+    warn("ScreenGui not found.")
+    return
+end
+local menu = ScreenGui:WaitForChild("Menu")
+local button = menu:FindFirstChild("Calibrate")
+local skillCheckFrame = menu:WaitForChild("SkillCheckFrame")
+local frame1 = skillCheckFrame:WaitForChild("Marker")
+local frame2 = skillCheckFrame:WaitForChild("GoldArea")
+
+local function Tap(gui)
+    if not gui then return end
+    local pos, size = gui.AbsolutePosition, gui.AbsoluteSize
+    local x = pos.X + (size.X / 2)
+    local y = pos.Y + (size.Y / 2) + 36 
+
+    VIM:SendTouchEvent(currentTouchId, 0, x, y) -- Begin
+    task.wait(0.01)                             -- Tối ưu tốc độ phản hồi cực nhanh (10ms)
+    VIM:SendTouchEvent(currentTouchId, 2, x, y) -- End
+end
+
+
 local up = false
 game:GetService("RunService").Heartbeat:Connect(function()
 local Character = game:GetService("Players").LocalPlayer.Character
 if not Character then return end
+if _G.AutoSkillcheck then
+local circleGui = PlayerGui:FindFirstChild("CircleSkillCheckGui")
+if circleGui then
+        local frame = circleGui:FindFirstChild("SkillCheckFrame")
+        local container = frame and frame:FindFirstChild("Container")
+        local shrink = container and container:FindFirstChild("ShrinkingCircle")
+        local yellow = container and container:FindFirstChild("YellowCircle")
+
+        if shrink and yellow then
+        if math.abs(shrink.AbsoluteSize.X - yellow.AbsoluteSize.X) <= 5 then
+        if not ClickedCircle then
+        ClickedCircle = true
+        task.spawn(Tap, yellow)
+        end
+            else
+        ClickedCircle = false
+        end
+      end
+    end
+  end
+local frame1X = frame1.AbsolutePosition.X
+ local frame2X = frame2.AbsolutePosition.X
+  local minRange = frame2X
+   local maxRange = frame2X + 10
+    if frame1X >= minRange and frame1X <= maxRange then
+        task.spawn(Tap, button)
+    end
+end
 if _G.AutoElevator then
 if game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menu.GeneratorFrame.CurrentAmount.Size == UDim2.new(1,0,1,0) then
 local nearElevator = false
@@ -542,50 +584,6 @@ end
 else
 Character.Humanoid.HipHeight = 1.3
 end
-if _G.RemovePopup then
-game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.PopUp.Visible = false
-end
-if _G.Fly then
-if Character and Character:FindFirstChildOfClass("Humanoid") and Character.Humanoid.RootPart and Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
-Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
-Character.Humanoid.PlatformStand = true
-Character.HumanoidRootPart.GyroHandler.CFrame = Workspace.CurrentCamera.CoordinateFrame
-Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X > 0 then
-Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeed or 16)
-end
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X < 0 then
-Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeed or 16)
-end
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z > 0 then
-Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeed or 16)
-end
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z < 0 then
-Character.HumanoidRootPart.VelocityHandler.Velocity = Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeed or 16)
-end
-elseif Character and Character:FindFirstChildOfClass("Humanoid") and Character.Humanoid.RootPart and Character.HumanoidRootPart:FindFirstChild("VelocityHandler") == nil and Character.HumanoidRootPart:FindFirstChild("GyroHandler") == nil then
-local bv = Instance.new("BodyVelocity")
-local bg = Instance.new("BodyGyro")
-
-bv.Name = "VelocityHandler"
-bv.Parent = Character.HumanoidRootPart
-bv.MaxForce = Vector3.new(0,0,0)
-bv.Velocity = Vector3.new(0,0,0)
-
-bg.Name = "GyroHandler"
-bg.Parent = Character.HumanoidRootPart
-bg.MaxTorque = Vector3.new(0,0,0)
-bg.P = 1000
-bg.D = 50
-end
-else
-if Character and Character:FindFirstChildOfClass("Humanoid") and Character.Humanoid.RootPart and Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-Character.HumanoidRootPart.VelocityHandler:Destroy()
-Character.HumanoidRootPart.GyroHandler:Destroy()
-Character.Humanoid.PlatformStand = false
-end
-end
 if _G.Noclip then
 for _, v in pairs(Character:GetChildren()) do
 if v:IsA("BasePart") then
@@ -594,4 +592,5 @@ end
 end
 end
 ScreenGui.Enabled = _G.GodmodeButton
+
 end)
