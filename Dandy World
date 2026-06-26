@@ -279,7 +279,6 @@ if circleGui then
             else
         ClickedCircle = false
         end
-      end
     end
   end
 local frame1X = frame1.AbsolutePosition.X
