@@ -235,12 +235,12 @@ local VIM = game:GetService("VirtualInputManager")
 local PlayerGui = Players.LocalPlayer.PlayerGui
 local ClickedSlider, ClickedCircle = false, false
 local currentTouchId = 1
-local ScreenGui = Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui")
-if not ScreenGui then
+local screenGui = Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui")
+if not screenGui then
     warn("ScreenGui not found.")
     return
 end
-local menu = ScreenGui:WaitForChild("Menu")
+local menu = screenGui:WaitForChild("Menu")
 local button = menu:FindFirstChild("Calibrate")
 local skillCheckFrame = menu:WaitForChild("SkillCheckFrame")
 local frame1 = skillCheckFrame:WaitForChild("Marker")
@@ -249,8 +249,8 @@ local frame2 = skillCheckFrame:WaitForChild("GoldArea")
 local function Tap(gui)
     if not gui then return end
     local pos, size = gui.AbsolutePosition, gui.AbsoluteSize
-    local x = pos.X + (size.X / 2)
-    local y = pos.Y + (size.Y / 2) + 36 
+    local x = pos.X + size.X / 2
+    local y = pos.Y + size.Y / 2
 
     VIM:SendTouchEvent(currentTouchId, 0, x, y) -- Begin
     task.wait(0.01)                             -- Tối ưu tốc độ phản hồi cực nhanh (10ms)
@@ -367,6 +367,7 @@ game.Lighting.GlobalShadows = false
 game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
 game.Lighting.Brightness = 1
 end
+--[[
 if _G.GodMode then
 if Character and Character:FindFirstChild("Head") and Character:FindFirstChild("RootPart") and Character:FindFirstChild("HumanoidRootPart") then
 local elevatorCheck = false
@@ -445,7 +446,7 @@ up = false
 end
 end
 end
-end
+end]]--
 if _G.ClaimHealthKit then
 local found = false
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
@@ -538,12 +539,12 @@ _G.ClaimJumperCable = false
 end
 if _G.ClaimAllRCT then
 local found = false
-local rp = Character.RootPart:FindFirstChild("oldpos_Hack")
+local rp = Character.HumanoidRootPart:FindFirstChild("oldpos_Hack")
 if not rp then
-rp = Instance.new("Part", Character.RootPart)
+rp = Instance.new("Part", Character.HumanoidRootPart)
 rp.Name = "oldpos_Hack"
 rp.Transparency = 1
-rp.CFrame = Character.RootPart.CFrame
+rp.CFrame = Character.HumanoidRootPart.CFrame
 end
 for _,v in ipairs(workspace.CurrentRoom:GetChildren()) do
 for _,v2 in ipairs(v:GetChildren()) do
@@ -584,7 +585,7 @@ else
 Character.Humanoid.HipHeight = 1.3
 end
 if _G.Noclip then
-for _, v in pairs(Character:GetChildren()) do
+for _, v in ipairs(Character:GetChildren()) do
 if v:IsA("BasePart") then
 v.CanCollide = false
 end
