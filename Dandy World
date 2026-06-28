@@ -260,8 +260,17 @@ if not Red or not Gold then return end
 local redsize = getsize(Red)
 local goldsize = getsize(Gold)
 local diff = math.abs(redsize - goldsize)
-local threshold = math.max(5, goldsize * 0.05)
+local threshold = math.max(7, goldsize * 0.05)
 if diff <= threshold then
+tap(Skillcheck)
+end
+end
+local function checkclick()
+local Tap = PlayerGui:FindFirstChild("TreadmillTapSkillCheckGui")
+if not Tap then return end
+local Skillcheck = PlayerGui:FindFirstChild("TapSkillCheckFrame")
+if not Skillcheck then return end
+if Skilcheck.Visible then
 tap(Skillcheck)
 end
 end
@@ -293,6 +302,7 @@ local Character = game:GetService("Players").LocalPlayer.Character
 if not Character then return end
 if _G.AutoSkillcheck then
 checkmatch()
+checkclick()
 checkvisible()
 end
 if _G.AutoElevator then
