@@ -267,7 +267,7 @@ end
 end
 local screenGui = PlayerGui:FindFirstChild("ScreenGui")
 if not screenGui then return end
-local Menu = ScreenGui:FindFirstChild("Menu")
+local Menu = screenGui:FindFirstChild("Menu")
 if not Menu then return end
 local Calibrate = Menu:FindFirstChild("Calibrate")
 if not Calibrate then return end
