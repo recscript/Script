@@ -229,65 +229,71 @@ Highlight.FillTransparency = 1
 Highlight.OutlineColor = color
 end
 end
-local Players = game:GetService("Players")
-local VIM = game:GetService("VirtualInputManager")
-
-local PlayerGui = Players.LocalPlayer.PlayerGui
-local ClickedSlider, ClickedCircle = false, false
-local currentTouchId = 1
-local screenGui = Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui")
-if not screenGui then
-    warn("ScreenGui not found.")
-    return
-end
-local menu = screenGui:WaitForChild("Menu")
-local button = menu:FindFirstChild("Calibrate")
-local skillCheckFrame = menu:WaitForChild("SkillCheckFrame")
-local frame1 = skillCheckFrame:WaitForChild("Marker")
-local frame2 = skillCheckFrame:WaitForChild("GoldArea")
-
-local function Tap(gui)
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
+local function tap(gui)
     if not gui then return end
     local pos, size = gui.AbsolutePosition, gui.AbsoluteSize
     local x = pos.X + size.X / 2
     local y = pos.Y + size.Y / 2
 
-    VIM:SendTouchEvent(currentTouchId, 0, x, y) -- Begin
-    task.wait(0.01)                             -- Tối ưu tốc độ phản hồi cực nhanh (10ms)
-    VIM:SendTouchEvent(currentTouchId, 2, x, y) -- End
+    VirtualInputManager:SendTouchEvent(1, 0, x, y) -- Begin
+    task.wait(0.01) 
+    VirtualInputManager:SendTouchEvent(1, 2, x, y) -- End
 end
-
-
+local function getsize(circle)
+		local size = circle.AbsoluteSize
+		local stroke = circle:FindFirstChildOfClass("UIStroke")
+		local thickness = stroke and stroke.Thickness or 0
+		return math.min(size.X, size.Y) + (thickness * 2)
+end
+local function checkmatch()
+local Circle = PlayerGui:FindFirstChild("CircleSkillCheckGui")
+if not Circle then return end
+local Skillcheck = Circle:FindFirstChild("SkillCheckFrame")
+if not Skillcheck then return end
+local Container = Skillcheck:FindFirstChild("Container")
+if not Container then return end
+local Red = Container:FindFirstChild("ShrinkingCircle")
+local Gold = Container:FindFirstChild("YellowCircle")
+if not Red or not Gold then return end
+local redsize = getsize(Red)
+local goldsize = getsize(Gold)
+local diff = math.abs(redsize - goldsize)
+local threshold = math.max(5, goldsize * 0.05)
+if diff <= threshold then
+tap(Skillcheck)
+end
+end
+local screenGui = PlayerGui:FindFirstChild("ScreenGui")
+if not screenGui then return end
+local Menu = ScreenGui:FindFirstChild("Menu")
+if not Menu then return end
+local Calibrate = Menu:FindFirstChild("Calibrate")
+if not Calibrate then return end
+local Skillcheck = Menu:FindFirstChild("SkillCheckFrame")
+if not Skillcheck then return end
+local function checkvisible()
+if Skillcheck.Visible then
+local Marker = Skillcheck:FindFirstChild("Marker")	
+local GoldArea = Skillcheck:FindFirstChild("GoldArea")
+if Marker and GoldArea then
+local markerPosition = Marker.AbsolutePosition
+local goldAreaPosition = GoldArea.AbsolutePosition
+local goldAreaSize = GoldArea.AbsoluteSize
+if markerPosition.X >= goldAreaPosition.X and markerPosition.X <= (goldAreaPosition.X + goldAreaSize.X) + 5 then
+tap(Calibrate)
+end
+end
+end
+end
 local up = false
 game:GetService("RunService").Heartbeat:Connect(function()
 local Character = game:GetService("Players").LocalPlayer.Character
 if not Character then return end
 if _G.AutoSkillcheck then
-local circleGui = PlayerGui:FindFirstChild("CircleSkillCheckGui")
-if circleGui then
-        local frame = circleGui:FindFirstChild("SkillCheckFrame")
-        local container = frame and frame:FindFirstChild("Container")
-        local shrink = container and container:FindFirstChild("ShrinkingCircle")
-        local yellow = container and container:FindFirstChild("YellowCircle")
-
-        if shrink and yellow then
-        if math.abs(shrink.AbsoluteSize.X - yellow.AbsoluteSize.X) <= 5 then
-        if not ClickedCircle then
-        ClickedCircle = true
-        task.spawn(Tap, yellow)
-        end
-            else
-        ClickedCircle = false
-        end
-    end
-  end
-local frame1X = frame1.AbsolutePosition.X
- local frame2X = frame2.AbsolutePosition.X
-  local minRange = frame2X
-   local maxRange = frame2X + 10
-    if frame1X >= minRange and frame1X <= maxRange then
-        task.spawn(Tap, button)
-    end
+checkmatch()
+checkvisible()
 end
 if _G.AutoElevator then
 if game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menu.GeneratorFrame.CurrentAmount.Size == UDim2.new(1,0,1,0) then
