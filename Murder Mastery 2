@@ -102,10 +102,13 @@ local function UpdateESP()
 
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= LP and player.Character then
-            if player == mud or player.Backpack:FindFirstChild("Knife") or player.Character:FindFirstChild("Knife") then
-                ApplyESP(player.Character, Color3.fromRGB(255, 0, 0)) -- Đỏ cho Murderer
-            elseif player == shf or player.Backpack:FindFirstChild("Gun") or player.Character:FindFirstChild("Gun") then
-                ApplyESP(player.Character, Color3.fromRGB(0, 160, 255)) -- Xanh dương cho Sheriff
+            if player == mud and not player.Character:FindFirstChild("EliteHighlight") then ApplyESP(player.Character, Color3.fromRGB(255, 0, 0)) -- Đỏ cho Murderer
+            elseif player == shf then 
+            if not player.Character:FindFirstChild("EliteHighlight") then
+            ApplyESP(player.Character, Color3.fromRGB(0, 160, 255)) -- Xanh dương cho Sheriff
+            else
+            player.Character:FindFirstChild("EliteHighlight").OutlineColor3 = Color3.fromRGB(0, 160, 255)
+            end
             else
                 ApplyESP(player.Character, Color3.fromRGB(0, 255, 100)) -- Xanh lá cho Dân thường
             end
@@ -124,7 +127,7 @@ end
 
 -- Vòng lặp quét liên tục để cập nhật ESP thời gian thực theo Tool
 task.spawn(function()
-    while task.wait(1) do
+    while task.wait() do
         UpdateESP()
     end
 end)
@@ -134,7 +137,7 @@ RunService.RenderStepped:Connect(function()
     local char = LP.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
 
-    char.Humanoid.WalkSpeed = 19
+    char.Humanoid.WalkSpeed = 18
 
     local tool = char:FindFirstChildOfClass("Tool")
     if tool then
