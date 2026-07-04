@@ -15,7 +15,7 @@ Title = "Main",
 Default = false,
 Callback = function(v)
 _G.AutoVoidShard = v
-end}]]-
+end})]]--
 local Players = game:GetService("Players")
 local LP = Players.LocalPlayer
 local RunService = game:GetService("RunService")
