@@ -1,0 +1,11 @@
+local Library = loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NOTHING/main/source.lua'))()
+local Notification = Library.Notification()
+local Windows = Library.new({
+	Title = "YOUHUB",
+	Description = "v0.1",
+	Keybind = Enum.KeyCode.LeftControl,
+	Logo = 'rbxassetid://'
+})
+local Tabs = {
+Main = Windows:NewTab({Title = "Main",Description = "Main Tabs",Icon = "rbxassetid://7733960981"}),
+}
