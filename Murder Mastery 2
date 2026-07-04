@@ -2,10 +2,17 @@ local Library = loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/
 local Notification = Library.Notification()
 local Windows = Library.new({
 	Title = "YOUHUB",
-	Description = "v0.1",
+	Description = "Murder Mastery 2",
 	Keybind = Enum.KeyCode.LeftControl,
 	Logo = 'rbxassetid://'
 })
 local Tabs = {
 Main = Windows:NewTab({Title = "Main",Description = "Main Tabs",Icon = "rbxassetid://7733960981"}),
 }
+local Main = Tabs.Main:NewSection({Title = "Main",Icon = "rbxassetid://10723396402",Position = "Left"})
+Event:NewToggle({
+Title = "Main",
+Default = false,
+Callback = function(v)
+_G.AutoVoidShard = v
+end})
