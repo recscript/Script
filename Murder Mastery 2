@@ -1,4 +1,4 @@
-local Library = loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NOTHING/main/source.lua'))()
+--[[local Library = loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NOTHING/main/source.lua'))()
 local Notification = Library.Notification()
 local Windows = Library.new({
 	Title = "YOUHUB",
@@ -15,4 +15,225 @@ Title = "Main",
 Default = false,
 Callback = function(v)
 _G.AutoVoidShard = v
-end})
+end}]]-
+local Players = game:GetService("Players")
+local LP = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Roles = { Murderer = nil, Sheriff = nil }
+local playerData = {} 
+
+-- 1. HÀM TÌM NGƯỜI GẦN NHẤT
+local function GetClosestPlayer()
+    local target, dist = nil, math.huge
+    for _, v in ipairs(Players:GetPlayers()) do
+        if v ~= LP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+            local d = (LP.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+            if d < dist then
+                dist = d
+                target = v
+            end
+        end
+    end
+    return target
+end
+
+-- 2. HÀM ESP
+local function ApplyESP(char, color)
+    if not char then return end
+    local hl = char:FindFirstChild("EliteHighlight") or Instance.new("Highlight", char)
+    hl.Name = "EliteHighlight"
+    hl.OutlineColor = color
+    hl.FillTransparency = 0.8
+    hl.OutlineTransparency = 0
+end
+
+-- 3. XÁC ĐỊNH ROLE QUA DỮ LIỆU GAME + KIỂM TRA VŨ KHÍ (TOOL)
+local function GetMurderer()
+    -- Cách 1: Kiểm tra qua dữ liệu hệ thống game
+    for id, data in pairs(playerData) do
+        if data.Role == "Murderer" then
+            local p = Players:FindFirstChild(id)
+            if p then return p end
+        end
+    end
+    -- Cách 2: Quét trực tiếp Tool trong Character hoặc Backpack
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LP then
+            local char = player.Character
+            local bp = player:FindFirstChild("Backpack")
+            if (char and char:FindFirstChild("Knife")) or (bp and bp:FindFirstChild("Knife")) then
+                return player
+            end
+        end
+    end
+    return nil
+end
+
+local function GetSheriff()
+    -- Cách 1: Kiểm tra qua dữ liệu hệ thống game
+    for id, data in pairs(playerData) do
+        if data.Role == "Sheriff" or data.Role == "Hero" then
+            local p = Players:FindFirstChild(id)
+            if p then return p end
+        end
+    end
+    -- Cách 2: Quét trực tiếp Tool trong Character hoặc Backpack
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LP then
+            local char = player.Character
+            local bp = player:FindFirstChild("Backpack")
+            if (char and char:FindFirstChild("Gun")) or (bp and bp:FindFirstChild("Gun")) then
+                return player
+            end
+        end
+    end
+    return nil
+end
+
+local function UpdateESP()
+    local mud = GetMurderer()
+    local shf = GetSheriff()
+    
+    Roles.Murderer = mud
+    Roles.Sheriff = shf
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LP and player.Character then
+            if player == mud or player.Backpack:FindFirstChild("Knife") or player.Character:FindFirstChild("Knife") then
+                ApplyESP(player.Character, Color3.fromRGB(255, 0, 0)) -- Đỏ cho Murderer
+            elseif player == shf or player.Backpack:FindFirstChild("Gun") or player.Character:FindFirstChild("Gun") then
+                ApplyESP(player.Character, Color3.fromRGB(0, 160, 255)) -- Xanh dương cho Sheriff
+            else
+                ApplyESP(player.Character, Color3.fromRGB(0, 255, 100)) -- Xanh lá cho Dân thường
+            end
+        end
+    end
+end
+
+-- Lắng nghe từ Game Event
+local remote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Gameplay"):WaitForChild("PlayerDataChanged", 5)
+if remote then
+    remote.OnClientEvent:Connect(function(data)
+        playerData = data
+        UpdateESP()
+    end)
+end
+
+-- Vòng lặp quét liên tục để cập nhật ESP thời gian thực theo Tool
+task.spawn(function()
+    while task.wait(1) do
+        UpdateESP()
+    end
+end)
+
+-- 4. AUTO SHOOT & SPEED (Mượt mà)
+RunService.RenderStepped:Connect(function()
+    local char = LP.Character
+    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+    char.Humanoid.WalkSpeed = 19
+
+    local tool = char:FindFirstChildOfClass("Tool")
+    if tool then
+        if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
+            local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
+            if mRoot then
+                tool.Shoot:FireServer(char.HumanoidRootPart.CFrame, mRoot.CFrame)
+            end
+        elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
+            tool:FindFirstChild("Stab"):FireServer("Slash")
+        end
+    end
+    for _,v in ipairs(workspace:GetChildren()) do
+    if v.Name == "GunDrop" and not v:FindFirstChild("GunDrop_Esp") then
+    local Billboard = Instance.new("BillboardGui", v)
+    local TextLabel = Instance.new("TextLabel", Billboard)
+    local UIStroke = Instance.new("UIStroke", TextLabel)
+    Billboard.AlwaysOnTop = true
+    Billboard.Size = UDim2.new(0,400,0,100)
+    Billboard.Active = true
+    Billboard.Name = "GunDrop_Esp"
+    TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+    TextLabel.BackgroundTransparency = 1
+    TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+    TextLabel.TextColor3 = Color3.new(1,1)
+    TextLabel.Font = "SourceSansBold"
+    TextLabel.TextSize = 14
+    TextLabel.TextTransparency = 0
+    TextLabel.Visible = true
+    TextLabel.Text = "Gun Drop"
+    TextLabel.Size = UDim2.new(1,0,0,0)
+    TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+    UIStroke.Thickness = 1
+    UIStroke.Color = Color3.new()
+    UIStroke.Transparency = 0
+    end
+    end
+end)
+
+local MainGui = Instance.new("ScreenGui", CoreGui)
+MainGui.Name = "ElitePremiumUI"
+
+local GrabGunButton = Instance.new("Frame", MainGui)
+GrabGunButton.Size = UDim2.new(0, 80, 0, 80)
+GrabGunButton.Position = UDim2.new(0.85, -10, 0.1, 0)
+GrabGunButton.BackgroundTransparency = 1
+Instance.new("UICorner", GrabGunButton).CornerRadius = UDim.new(1, 0)
+local GrabButton = Instance.new("TextButton", GrabGunButton)
+GrabButton.Name = "ThrowBtn"
+GrabButton.Size = UDim2.new(1, 0, 1, 0)
+GrabButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
+GrabButton.BackgroundTransparency = 0.3
+GrabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+GrabButton.Text = "Grab Gun"
+Instance.new("UICorner", GrabButton).CornerRadius = UDim.new(1, 0)
+local UiStroke = Instance.new("UIStroke", GrabGunButton)
+UiStroke.Color = Color3.fromRGB(255, 255, 255)
+UiStroke.Transparency = 0.3
+local UiStroke2 = Instance.new("UIStroke", GrabGunButton)
+UiStroke2.Color = Color3.fromRGB(0,0,0)
+UiStroke2.Thickness = 2
+UiStroke2.Transparency = 0.3
+GrabButton.MouseButton1Click:Connect(function()
+    local drop = workspace:FindFirstChild("GunDrop", true)
+    if drop then
+        local hrp = LP.Character.HumanoidRootPart
+        local old = hrp.CFrame
+        hrp.CFrame = drop.CFrame
+        task.wait(0.2)
+        hrp.CFrame = old
+    end
+end)
+local ThrowFrame = Instance.new("Frame", MainGui)
+ThrowFrame.Size = UDim2.new(0, 80, 0, 80)
+ThrowFrame.Position = UDim2.new(0.85, 0, 0.45, 0)
+ThrowFrame.BackgroundTransparency = 1
+Instance.new("UICorner", ThrowFrame).CornerRadius = UDim.new(1, 0)
+local ThrowBtn = Instance.new("TextButton", ThrowFrame)
+ThrowBtn.Name = "ThrowBtn"
+ThrowBtn.Size = UDim2.new(1, 0, 1, 0)
+ThrowBtn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+ThrowBtn.BackgroundTransparency = 0.3
+ThrowBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ThrowBtn.Text = "Throw Knife"
+Instance.new("UICorner", ThrowBtn).CornerRadius = UDim.new(1, 0)
+local UiStroke3 = Instance.new("UIStroke", ThrowFrame)
+UiStroke3.Color = Color3.fromRGB(255, 255, 255)
+UiStroke3.Transparency = 0.3
+local UiStroke4 = Instance.new("UIStroke", ThrowFrame)
+UiStroke4.Color = Color3.fromRGB(0,0,0)
+UiStroke4.Thickness = 2
+UiStroke4.Transparency = 0.3
+ThrowBtn.MouseButton1Click:Connect(function()
+    local knife = LP.Character:FindFirstChild("Knife") or LP.Backpack:FindFirstChild("Knife")
+    if knife then
+        knife.Parent = LP.Character
+        local target = GetClosestPlayer()
+        if target and target.Character then
+            knife.Events.KnifeThrown:FireServer(LP.Character.HumanoidRootPart.CFrame, target.Character.HumanoidRootPart.CFrame)
+        end
+    end
+end)
