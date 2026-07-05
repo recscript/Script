@@ -107,7 +107,7 @@ local function UpdateESP()
             if not player.Character:FindFirstChild("EliteHighlight") then
             ApplyESP(player.Character, Color3.fromRGB(0, 160, 255)) -- Xanh dương cho Sheriff
             else
-            player.Character:FindFirstChild("EliteHighlight").OutlineColor3 = Color3.fromRGB(0, 160, 255)
+            player.Character:FindFirstChild("EliteHighlight").OutlineColor = Color3.fromRGB(0, 160, 255)
             end
             else
                 ApplyESP(player.Character, Color3.fromRGB(0, 255, 100)) -- Xanh lá cho Dân thường
@@ -144,7 +144,7 @@ RunService.RenderStepped:Connect(function()
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
             local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
             if mRoot then
-                tool.Shoot:FireServer(tool:FindFirstChildOfClass("BasePart").CFrame, mRoot.CFrame)
+                tool.Shoot:FireServer(mRoot.Position)
             end
         elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
             tool:FindFirstChild("Stab"):FireServer("Slash")
@@ -167,7 +167,7 @@ RunService.RenderStepped:Connect(function()
     TextLabel.TextSize = 14
     TextLabel.TextTransparency = 0
     TextLabel.Visible = true
-    TextLabel.Text = "Gun Drop"
+    TextLabel.Text = "Gundrop"
     TextLabel.Size = UDim2.new(1,0,0,0)
     TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
     UIStroke.Thickness = 1
