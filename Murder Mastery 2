@@ -40,16 +40,6 @@ local function GetClosestPlayer()
     return target
 end
 
--- 2. HÀM ESP
-local function ApplyESP(char, color)
-    if not char then return end
-    local hl = char:FindFirstChild("EliteHighlight") or Instance.new("Highlight", char)
-    hl.Name = "EliteHighlight"
-    hl.OutlineColor = color
-    hl.FillTransparency = 0.8
-    hl.OutlineTransparency = 0
-end
-
 -- 3. XÁC ĐỊNH ROLE QUA DỮ LIỆU GAME + KIỂM TRA VŨ KHÍ (TOOL)
 local function GetMurderer()
     -- Cách 1: Kiểm tra qua dữ liệu hệ thống game
@@ -93,32 +83,44 @@ local function GetSheriff()
     return nil
 end
 
+local function ApplyESP(child, color, name)
+    if not child then return end
+    local hl = Instance.new("Highlight", child)
+    hl.Name = name
+    hl.OutlineColor = color
+    hl.FillTransparency = 0.8
+    hl.OutlineTransparency = 0
+end
 local function UpdateESP()
     local mud = GetMurderer()
     local shf = GetSheriff()
-    
+
     Roles.Murderer = mud
     Roles.Sheriff = shf
 
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= LP and player.Character then
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= game:GetService("Players").LocalPlayer and player.Character then
             if player == mud then
-            if not player.Character:FindFirstChild("EliteHighlight") then
-            ApplyESP(player.Character, Color3.fromRGB(255,0,0)) -- Đỏ lè
-            else
-            player.Character:FindFirstChild("EliteHighlight").OutlineColor = Color3.fromRGB(255,0,0)
+            if not player.Character:FindFirstChild("Murderer_ESP") then
+            ApplyESP(player.Character, Color3.new(1), "Murderer_ESP")
+            end
+            if player.Character:FindFirstChild("Murderer_ESP") then
+            player.Character["Murderer_ESP"].OutlineColor = Color3.new(1)
             end
             elseif player == shf then 
-            if not player.Character:FindFirstChild("EliteHighlight") then
-            ApplyESP(player.Character, Color3.fromRGB(0, 160, 255)) -- Xanh dương cho Sheriff
-            else
-            player.Character:FindFirstChild("EliteHighlight").OutlineColor = Color3.fromRGB(0, 160, 255)
+            if not player.Character:FindFirstChild("Sheriff_ESP") then
+            ApplyESP(player.Character, Color3.new(0.2,0.2,1), "Sheriff_ESP")
+            end
+            if player.Character:FindFirstChild("Sheriff_ESP") then
+            player.Character["Sheriff_ESP"].OutlineColor = Color3.new(0.2,0.2,1)
             end
             else
-                ApplyESP(player.Character, Color3.fromRGB(0, 255, 100)) -- Xanh lá cho Dân thường
+            if not player.Character:FindFirstChild("Innocent_ESP") then
+            ApplyESP(player.Character, Color3.fromRGB(0, 255, 100), "Innocent_ESP")
             end
-        end
-    end
+         end
+      end
+   end
 end
 
 -- Lắng nghe từ Game Event
@@ -149,7 +151,7 @@ RunService.RenderStepped:Connect(function()
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
             local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
             if mRoot then
-                tool.Shoot:FireServer(char.HumanoidRootPart.Position, mRoot.Position)
+                tool.Shoot:FireServer(char.HumanoidRootPart.CFrame, mRoot.CFrame)
             end
         elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
             tool:FindFirstChild("Stab"):FireServer("Slash")
@@ -182,7 +184,7 @@ RunService.RenderStepped:Connect(function()
 end)
 
 local MainGui = Instance.new("ScreenGui", CoreGui)
-MainGui.Name = "ElitePremiumUI"
+MainGui.Name = "GrabGun_UI"
 
 local GrabGunButton = Instance.new("Frame", MainGui)
 GrabGunButton.Size = UDim2.new(0, 80, 0, 80)
@@ -214,7 +216,9 @@ GrabButton.MouseButton1Click:Connect(function()
         hrp.CFrame = old
     end
 end)
-local ThrowFrame = Instance.new("Frame", MainGui)
+local MainGui2 = Instance.new("ScreenGui", CoreGui)
+MainGui2.Name = "KnifeThrow_Button"
+local ThrowFrame = Instance.new("Frame", MainGui2)
 ThrowFrame.Size = UDim2.new(0, 80, 0, 80)
 ThrowFrame.Position = UDim2.new(0.85, 0, 0.45, 0)
 ThrowFrame.BackgroundTransparency = 1
