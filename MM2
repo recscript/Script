@@ -1,0 +1,245 @@
+local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Options = Library.Options
+local Toggles = Library.Toggles
+Library.ShowToggleFrameInKeybinds = true 
+Library.ShowCustomCursor = true
+Library.NotifySide = "Right"
+
+local Window = Library:CreateWindow({
+	Title = 'Murder Mastery 2 | v0.0.1',
+	Center = true,
+	AutoShow = true,
+	Resizable = true,
+	ShowCustomCursor = true,
+	NotifySide = "Right",
+	TabPadding = 8,
+	MenuFadeTime = 0
+})
+local Tabs = {
+	Main = Window:AddTab('Main')
+}
+function Notification(title)
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = 5
+Sound.PlayOnRemove = true
+Sound:Destroy()
+Library:Notify(title)
+end
+local ESP = Tabs.Main:AddLeftGroupbox("ESP")
+ESP:AddToggle("Players ESP",{
+Text = "Players ESP",
+Default = false,
+Callback = function(v)
+
+
+
+
+
+
+--[[
+function Murderer()
+for _, v in game:GetService("Players"):GetChildren() do
+if v.Backpack:FindFirstChild("Knife") or v.Character and v.Character:FindFirstChild("Knife") then return v.Character end
+end
+return nil
+end
+function Sheriff()
+for _, v in game:GetService("Players"):GetChildren() do
+if v.Backpack:FindFirstChild("Gun") or v.Character and v.Character:FindFirstChild("Gun") then return v.Character end
+end
+return nil
+end
+local Map = "..."
+spawn(function()
+while true do
+for _,v in ipairs(workspace:GetChildren()) do
+if v:IsA("Model") and v.Parent == workpsace and v:GetAttribute("MapID") then
+local Map = v
+end
+end
+wait()
+end
+end)
+function Sound()
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = 5
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+function Chat(text)
+game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(text)
+end
+
+local Tabs = {
+	Main = Window:AddTab('Main')
+}
+local Main = Tabs.Main:AddLeftGroupbox("Main")
+Main:AddButton("Find Sheriff", function()
+local Players = game:GetService("Players"):GetChildren()
+table.remove(Players, 1)
+for i, v in Players do
+if v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
+Library:Notify("Sherrif is:\n" .. v.DisplayName .. "!")
+Sound()
+end
+end
+end):AddButton("Find Murder", function()
+local Players = game:GetService("Players"):GetChildren()
+table.remove(Players, 1)
+for i, v in Players do
+if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
+Library:Notify("Murder is:\n" .. v.DisplayName .. "!")
+Sound()
+end
+end
+end)
+Main:AddDivider()
+Main:AddButton("Chat Sheriff", function()
+local Players = game:GetService("Players"):GetChildren()
+table.remove(Players, 1)
+for i, v in Players do
+if v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
+Chat("Sheriff : " .. v.DisplayName)
+end
+end
+end):AddButton("Chat Murder", function()
+local Players = game:GetService("Players"):GetChildren()
+table.remove(Players, 1)
+for i, v in Players do
+if v.Backpack:FindFirstChild("Knife") or v.Character:FindFirstChild("Knife") then
+Chat("Murder : " .. v.DisplayName)
+end
+end
+end)
+Main:AddDivider()
+Main:AddToggle("AutoChatMurder",{
+Text = "Auto Grab Gun",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(Map:GetDescendants()) do
+if v.Name == "GunDrop" and v then
+local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+wait(0.2)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.CFrame
+wait(0.25)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = OldPos
+end
+end
+AutoGrabGun = Map.DescendantAdded:Connect(function(v)
+if v.Name == "GunDrop" and v then
+local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+wait(0.2)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.CFrame
+wait(0.25)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = OldPos
+end
+end)
+else
+AutoGrabGun:Disconnect()
+end
+end})
+Main:AddButton("Grab Gun", function()
+for _,v in ipairs(Map:GetDescendants()) do
+if v.Name == "GunDrop" and v then
+local OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+wait(0.2)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.CFrame
+wait(0.25)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = OldPos
+end
+end
+end)
+Main:AddButton("Kill All", function()
+for i, v in game:GetService("Players"):GetChildren() do
+if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") then game.Players.LocalPlayer.Backpack.Knife.Parent = game.Players.LocalPlayer.Character end
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "HumanoidRootPart" then
+v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+local args = {
+[1] = "Slash"
+}
+game.Players.LocalPlayer.Character.Knife:WaitForChild("Stab"):FireServer(unpack(args))
+end
+end
+end
+end):AddButton("Kill Sheriff", function()
+for i, v in game:GetService("Players"):GetChildren() do
+if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") then game.Players.LocalPlayer.Backpack.Knife.Parent = game.Players.LocalPlayer.Character end
+if v.Backpack:FindFirstChild("Gun") or v.Character:FindFirstChild("Gun") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+local args = {
+[1] = "Slash"
+}
+game.Players.LocalPlayer.Character.Knife:WaitForChild("Stab"):FireServer(unpack(args))
+end
+end
+end)
+local Misc = Tabs.Main:AddLeftGroupbox("Misc")
+Misc:AddToggle("AutoShootMurder",{
+Text = "Auto Shoot Murderer",
+Default = false,
+Callback = function(v)
+_G.AutoShootMurder = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoShootMurder then
+local args = {
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+Murderer().HumanoidRootPart.CFrame
+}
+game:GetService("Players").LocalPlayer.Character:WaitForChild("Gun"):WaitForChild("Shoot"):FireServer(unpack(args))
+end
+end)
+end})
+function FlingMurderer()
+    local lp = game.Players.LocalPlayer
+    local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+    local targetHrp = Murderer():FindFirstChild("HumanoidRootPart")
+
+    if hrp and targetHrp then
+        local oldPos = hrp.CFrame
+        local th = instance.new("BodyAngularVelocity")
+        th.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+        th.P = 1000000
+        th.AngularVelocity = Vector3.new(0, 50000000, 0)
+        th.Parent = hrp
+        
+        hrp.CFrame = targetHrp.CFrame * CFrame.new(0, 0, 1)
+        task.wait(0.3)
+        
+
+        th:Destroy()
+        hrp.CFrame = oldPos
+    end
+end
+function FlingSheriff()
+    local lp = game.Players.LocalPlayer
+    local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+    local targetHrp = Sheriff():FindFirstChild("HumanoidRootPart")
+
+    if hrp and targetHrp then
+        local oldPos = hrp.CFrame
+        local th = instance.new("BodyAngularVelocity")
+        th.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+        th.P = 1000000
+        th.AngularVelocity = Vector3.new(0, 50000000, 0)
+        th.Parent = hrp
+        
+        hrp.CFrame = targetHrp.CFrame * CFrame.new(0, 0, 1)
+        task.wait(0.3)
+        
+
+        th:Destroy()
+        hrp.CFrame = oldPos
+    end
+end
+Misc:AddButon("Fling Murderer", function()
+FlingMurderer()end):AddButton("Fling Sheriff", function()FlingSheriff()end)]]--
