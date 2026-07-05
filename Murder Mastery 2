@@ -151,11 +151,25 @@ RunService.RenderStepped:Connect(function()
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
             local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
             if mRoot then
-                tool.Shoot:FireServer(char.HumanoidRootPart.CFrame, mRoot.CFrame)
+                tool.Shoot:FireServer(tool.Handle.CFrame, mRoot.CFrame)
             end
         elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
             tool:FindFirstChild("Stab"):FireServer("Slash")
         end
+    end
+    for _,m in ipairs(workspace:GetChildren()) do
+    if m:IsA("Model") and m:GetAttribute("Map") then
+    for _,cc in ipairs(m:GetChildren()) do
+    if cc:IsA("Model") and v.Name == "CoinContainer" then
+    for _, coin in ipairs(cc:GetChildren()) do
+    if coin.Name == "Coin_Server" and not coin:FindFirstChild("Coin_ESP") then
+    coin.Size = Vector3.new(7,coin.Size.Y,7)
+    ApplyESP(coin, Color3.new(1,1,0.2), "Coin_ESP")
+    end
+    end
+    end
+    end
+    end
     end
     local drop = workspace:FindFirstChild("GunDrop", true)
     if drop and not drop:FindFirstChild("GunDrop_Esp") then
