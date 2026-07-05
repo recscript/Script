@@ -160,7 +160,7 @@ RunService.RenderStepped:Connect(function()
     for _,m in ipairs(workspace:GetChildren()) do
     if m:IsA("Model") and m:GetAttribute("Map") then
     for _,cc in ipairs(m:GetChildren()) do
-    if cc:IsA("Model") and v.Name == "CoinContainer" then
+    if cc:IsA("Model") and cc.Name == "CoinContainer" then
     for _, coin in ipairs(cc:GetChildren()) do
     if coin.Name == "Coin_Server" and not coin:FindFirstChild("Coin_ESP") then
     coin.Size = Vector3.new(7,coin.Size.Y,7)
