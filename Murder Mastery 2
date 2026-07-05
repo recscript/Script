@@ -102,7 +102,12 @@ local function UpdateESP()
 
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= LP and player.Character then
-            if player == mud and not player.Character:FindFirstChild("EliteHighlight") then ApplyESP(player.Character, Color3.fromRGB(255, 0, 0)) -- Đỏ cho Murderer
+            if player == mud then
+            if not player.Character:FindFirstChild("EliteHighlight") then
+            ApplyESP(player.Character, Color3.fromRGB(255,0,0)) -- Đỏ lè
+            else
+            player.Character:FindFirstChild("EliteHighlight").OutlineColor = Color3.fromRGB(255,0,0)
+            end
             elseif player == shf then 
             if not player.Character:FindFirstChild("EliteHighlight") then
             ApplyESP(player.Character, Color3.fromRGB(0, 160, 255)) -- Xanh dương cho Sheriff
@@ -144,7 +149,7 @@ RunService.RenderStepped:Connect(function()
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
             local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
             if mRoot then
-                tool.Shoot:FireServer(mRoot.Position)
+                tool.Shoot:FireServer(char.HumanoidRootPart.Position, mRoot.Position)
             end
         elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
             tool:FindFirstChild("Stab"):FireServer("Slash")
@@ -194,7 +199,7 @@ GrabButton.Text = "Grab Gun"
 Instance.new("UICorner", GrabButton).CornerRadius = UDim.new(1, 0)
 local UiStroke = Instance.new("UIStroke", GrabGunButton)
 UiStroke.Color = Color3.fromRGB(255, 255, 255)
-UiStroke.Transparency = 0.3
+UiStroke.Transparency = 0
 local UiStroke2 = Instance.new("UIStroke", GrabGunButton)
 UiStroke2.Color = Color3.fromRGB(0,0,0)
 UiStroke2.Thickness = 2
@@ -224,7 +229,7 @@ ThrowBtn.Text = "Throw Knife"
 Instance.new("UICorner", ThrowBtn).CornerRadius = UDim.new(1, 0)
 local UiStroke3 = Instance.new("UIStroke", ThrowFrame)
 UiStroke3.Color = Color3.fromRGB(255, 255, 255)
-UiStroke3.Transparency = 0.3
+UiStroke3.Transparency = 0
 local UiStroke4 = Instance.new("UIStroke", ThrowFrame)
 UiStroke4.Color = Color3.fromRGB(0,0,0)
 UiStroke4.Thickness = 2
