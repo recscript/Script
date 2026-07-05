@@ -144,15 +144,15 @@ RunService.RenderStepped:Connect(function()
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
             local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
             if mRoot then
-                tool.Shoot:FireServer(char.HumanoidRootPart.CFrame, mRoot.CFrame)
+                tool.Shoot:FireServer(tool:FindFirstChildOfClass("BasePart").CFrame, mRoot.CFrame)
             end
         elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
             tool:FindFirstChild("Stab"):FireServer("Slash")
         end
     end
-    for _,v in ipairs(workspace:GetChildren()) do
-    if v.Name == "GunDrop" and not v:FindFirstChild("GunDrop_Esp") then
-    local Billboard = Instance.new("BillboardGui", v)
+    local drop = workspace:FindFirstChild("GunDrop", true)
+    if drop and not drop:FindFirstChild("GunDrop_Esp") then
+    local Billboard = Instance.new("BillboardGui", drop)
     local TextLabel = Instance.new("TextLabel", Billboard)
     local UIStroke = Instance.new("UIStroke", TextLabel)
     Billboard.AlwaysOnTop = true
@@ -173,7 +173,6 @@ RunService.RenderStepped:Connect(function()
     UIStroke.Thickness = 1
     UIStroke.Color = Color3.new()
     UIStroke.Transparency = 0
-    end
     end
 end)
 
@@ -206,7 +205,7 @@ GrabButton.MouseButton1Click:Connect(function()
         local hrp = LP.Character.HumanoidRootPart
         local old = hrp.CFrame
         hrp.CFrame = drop.CFrame
-        task.wait(0.2)
+        task.wait(0.05)
         hrp.CFrame = old
     end
 end)
