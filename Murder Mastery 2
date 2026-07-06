@@ -116,7 +116,7 @@ RunService.RenderStepped:Connect(function()
     local tool = char:FindFirstChildOfClass("Tool")
     if tool then
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
-            local mRoot = Roles.Murderer.Character:FindFirstChild("HumanoidRootPart")
+            local mRoot = Roles.Murderer.Character:FindFirstChild("Head")
             if mRoot then
                 tool.Shoot:FireServer(tool.Handle.CFrame, mRoot.CFrame)
             end
