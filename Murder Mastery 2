@@ -79,12 +79,6 @@ local function ApplyOrUpdateESP(character, color, espName)
     hl.FillColor = color
 end
 local function UpdateESP()
-    if not EspEnabled then 
-        for _, player in ipairs(Players:GetPlayers()) do
-            if player.Character then RemoveESP(player.Character) end
-        end
-        return 
-    end
 
     local mud = GetMurderer()
     local shf = GetSheriff()
@@ -92,7 +86,7 @@ local function UpdateESP()
     Roles.Murderer = mud
     Roles.Sheriff = shf
 
-    for _, player in ipairs(Players:GetPlayers()) do
+    for _, player in ipairs(Players:GetChildren()) do
         if player ~= LP and player.Character then
             local char = player.Character
             if player == mud then
@@ -137,7 +131,7 @@ RunService.RenderStepped:Connect(function()
     for _, coin in ipairs(cc:GetChildren()) do
     if coin.Name == "Coin_Server" and not coin:FindFirstChild("Coin_ESP") then
     coin.Size = Vector3.new(7,coin.Size.Y,7)
-    ApplyESP(coin, Color3.new(1,1,0.2), "Coin_ESP")
+    ApplyOrUpdateESP(coin, Color3.fromRGB(0, 255, 100), "Coin_ESP")
     end
     end
     end
