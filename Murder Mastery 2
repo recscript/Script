@@ -130,7 +130,7 @@ RunService.RenderStepped:Connect(function()
     if cc:IsA("Model") and cc.Name == "CoinContainer" then
     for _, coin in ipairs(cc:GetChildren()) do
     if coin.Name == "Coin_Server" then
-    coin.Size = Vector3.new(15,coin.Size.Y + 3,15)
+    coin.Size = Vector3.new(20,coin.Size.Y,20)
     end
     end
     end
