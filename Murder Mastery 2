@@ -92,7 +92,7 @@ local function UpdateESP()
             if player == mud then
                 ApplyOrUpdateESP(char, Color3.new(1, 0, 0), "Murderer_ESP")
 if not char:FindFirstChild("Murderer_Text") then
-    local Billboard = Instance.new("BillboardGui", drop)
+    local Billboard = Instance.new("BillboardGui", char)
     local TextLabel = Instance.new("TextLabel", Billboard)
     local UIStroke = Instance.new("UIStroke", TextLabel)
     Billboard.AlwaysOnTop = true
@@ -152,7 +152,7 @@ RunService.RenderStepped:Connect(function()
     for _,cc in ipairs(m:GetChildren()) do
     if cc:IsA("Model") and cc.Name == "CoinContainer" and cc:FindFirstChild("Coin_Server") then
     for _, coin in ipairs(cc:GetChildren()) do
-    if coin.Name == "Coin_Server" and (coin.Position - char.Head.Position).Magnitude < 10 then
+    if coin.Name == "Coin_Server" and (coin.Position - char.HumanoidRootPart.Position).Magnitude < 15 then
     coin.CFrame = char.HumanoidRootPart.CFrame
     end
     end
