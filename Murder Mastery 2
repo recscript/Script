@@ -147,15 +147,6 @@ RunService.RenderStepped:Connect(function()
             tool:FindFirstChild("Stab"):FireServer("Slash")
         end
     end
-    for _,m in ipairs(workspace:GetChildren()) do
-    if m:IsA("Model") and m:GetAttribute("MapID") then
-    local cc = m:FindFirstChild("CoinContainer")
-    if not cc then return end
-    if cc and (cc:FindFirstChild("Coin_Server").Position - char.HumanoidRootPart.Position).Magnitude < 15 then
-    cc:FindFirstChild("Coin_Server").CFrame = char.HumanoidRootPart.CFrame
-    end
-    end
-    end
     local drop = workspace:FindFirstChild("GunDrop", true)
     if drop and not drop:FindFirstChild("GunDrop_Esp") then
     local Billboard = Instance.new("BillboardGui", drop)
@@ -247,3 +238,15 @@ ThrowBtn.MouseButton1Click:Connect(function()
         end
     end
 end)
+local function ResizeCoins(v)
+    if v.Name == "Coin_Server" and not v:FindFirstChild("Coin_Esp") then
+        v.Size = Vector3.new(15,v.Position.Y + 1, 15)
+        v.CanCollide = false
+        local h = Instance.new("Highlight", v)
+        h.FillTransparency = 1
+        h.Name = "Coin_Esp"
+    end
+end
+
+for _, v in ipairs(workspace:GetDescendants()) do ResizeCoins(v) end
+workspace.DescendantAdded:Connect(ResizeCoins)
