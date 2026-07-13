@@ -130,12 +130,31 @@ if remote then
         UpdateESP()
     end)
 end
+spawn(function()
+while wait(1) do
+UpdateESP()
+end
+end)
 RunService.RenderStepped:Connect(function()
     local char = LP.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-    UpdateESP()
+    
     char.Humanoid.WalkSpeed = _G.Speed or 18.5
 
+for _,v in ipairs(workspace:GetChildren()) do
+if v:IsA("Model") and v:GetAttribute("MapID") then
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "CoinContainer" then
+for _,v3 in ipairs(v2:GetChildren()) do
+if v3.Name == "Coin_Server" and v3.Transparency == 0 then
+v3.Size = Vector3.new(15,v3.Position.Y + 1, 15)
+v3.CanCollide = false
+end
+end
+end
+end
+end
+end
     local tool = char:FindFirstChildOfClass("Tool")
     if tool then
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
@@ -238,15 +257,3 @@ ThrowBtn.MouseButton1Click:Connect(function()
         end
     end
 end)
-local function ResizeCoins(v)
-    if v.Name == "Coin_Server" and not v:FindFirstChild("Coin_Esp") then
-        v.Size = Vector3.new(15,v.Position.Y + 1, 15)
-        v.CanCollide = false
-        local h = Instance.new("Highlight", v)
-        h.FillTransparency = 1
-        h.Name = "Coin_Esp"
-    end
-end
-
-for _, v in ipairs(workspace:GetDescendants()) do ResizeCoins(v) end
-workspace.DescendantAdded:Connect(ResizeCoins)
