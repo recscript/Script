@@ -143,8 +143,6 @@ end
 end)
 end
 end
-end
-end
 end)
 workspace.NPCS.ChildAdded:Connect(function(v)
 local Billboard = Instance.new("BillboardGui", v)
