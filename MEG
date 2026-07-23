@@ -1,0 +1,204 @@
+local screen_gui = Instance.new("ScreenGui")
+screen_gui.DisplayOrder = 999999999
+screen_gui.IgnoreGuiInset = false
+screen_gui.ResetOnSpawn = false
+screen_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screen_gui.Parent = game.CoreGui
+local timer = Instance.new("Frame")
+timer.AnchorPoint = Vector2.new(1, 0.9700000286102295)
+timer.BackgroundColor3 = Color3.new(1, 1, 1)
+timer.BackgroundTransparency = 1
+timer.BorderColor3 = Color3.new(0, 0, 0)
+timer.BorderSizePixel = 0
+timer.Position = UDim2.new(1, 0, 0.982205212, 0)
+timer.Size = UDim2.new(1, 0, 0.112479456, 0)
+timer.Visible = true
+timer.Name = "Timer"
+timer.Parent = screen_gui
+
+local image_label = Instance.new("ImageLabel")
+image_label.Image = "rbxassetid://16781696827"
+image_label.BackgroundColor3 = Color3.new(1, 1, 1)
+image_label.BackgroundTransparency = 1
+image_label.BorderColor3 = Color3.new(0, 0, 0)
+image_label.BorderSizePixel = 0
+image_label.Position = UDim2.new(0.829316378, 0, 0, 0)
+image_label.Size = UDim2.new(0.170516863, 0, 1, 0)
+image_label.Visible = true
+image_label.ZIndex = 0
+image_label.Parent = timer
+
+local timer_2 = Instance.new("TextLabel")
+timer_2.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Bold)
+timer_2.Text = "01:00"
+timer_2.TextColor3 = Color3.new(1, 0.705882, 0.298039)
+timer_2.TextScaled = true
+timer_2.TextSize = 14
+timer_2.TextWrapped = true
+timer_2.TextXAlignment = Enum.TextXAlignment.Right
+timer_2.AnchorPoint = Vector2.new(0.5, 0.5)
+timer_2.BackgroundColor3 = Color3.new(1, 1, 1)
+timer_2.BackgroundTransparency = 1
+timer_2.BorderColor3 = Color3.new(0, 0, 0)
+timer_2.BorderSizePixel = 0
+timer_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+timer_2.Size = UDim2.new(0.999833286, 0, 1, 0)
+timer_2.Visible = true
+timer_2.Name = "Timer"
+timer_2.Parent = image_label
+
+local uipadding_3 = Instance.new("UIPadding")
+uipadding_3.PaddingBottom = UDim.new(0.07999999821186066, 0)
+uipadding_3.PaddingLeft = UDim.new(0.20000000298023224, 0)
+uipadding_3.PaddingRight = UDim.new(0.20000000298023224, 0)
+uipadding_3.Parent = timer_2
+
+local uiaspect_ratio_constraint_2 = Instance.new("UIAspectRatioConstraint")
+uiaspect_ratio_constraint_2.AspectRatio = 15.940258026123047
+uiaspect_ratio_constraint_2.Parent = timer
+
+for _,v in ipairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+local Player = game.Players.LocalPlayer
+    local Character = Player.Character
+    if not Character or not Character:FindFirstChild("Humanoid") then return end
+    Character.Humanoid.WalkSpeed = 27
+    workspace.Camera.FieldOfView = 120
+game:GetService("ReplicatedStorage").Events.GradeStuff:FireServer({})
+timer_2.Text = workspace.Elevators.Level0Elevator.Timer.holder.time1.Time.Text
+game.Lighting.Brightness = 1
+game.Lighting.GlobalShadows = false
+game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+game.Lighting.FogEnd = 9e9
+for _,v in ipairs(workspace.Puzzle.Puzzles:GetChildren()) do
+if v:IsA("Folder") then
+for _,v2 in ipairs(v:GetChildren()) do
+if not v2:FindFirstChild("Puzzle_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+Billboard.Name = "Puzzle_ESP"
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.fromRGB(0,255,100)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = "Puzzle"
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("Puzzle\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end
+end
+end
+end
+for _,v in ipairs(workspace.Elevators:GetChildren()) do
+if not v:FindFirstChild("Elevator_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+Billboard.Name = "Elevator_ESP"
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.fromRGB(255,255,100)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = "Puzzle"
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("Elevator\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end
+end
+end
+end
+end)
+workspace.NPCS.ChildAdded:Connect(function(v)
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.fromRGB(255,100,100)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = v.Name
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("%s\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end)
+workspace.Puzzle.Puzzles.ChildAdded:Connect(function(v)
+if not v:IsA("Folder") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.fromRGB(0,255,100)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = "Puzzle"
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("Puzzle\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end
+end)
