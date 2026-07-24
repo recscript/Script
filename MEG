@@ -81,6 +81,7 @@ local Player = game.Players.LocalPlayer
     if not Character or not Character:FindFirstChild("Humanoid") then return end
     Character.Humanoid.WalkSpeed = 27
     workspace.Camera.FieldOfView = 120
+Player.PlayerGui.MainGUI.Vignette.Visible = false
 game:GetService("ReplicatedStorage").Events.GradeStuff:FireServer({})
 timer_2.Text = workspace.Elevators.Level0Elevator.Timer.holder.time1.Time.Text
 game.Lighting.Brightness = 1
@@ -172,7 +173,7 @@ UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 task.spawn(function()
 while wait(0.001) do
-TextLabel.Text = string.format("Puzzle\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+TextLabel.Text = string.format("Puzzle\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v2:GetPivot().Position).Magnitude))
 end
 end)
 end
@@ -181,6 +182,62 @@ end
 end)
 workspace.Puzzle.Puzzles.ChildAdded:Connect(function(v)
 if not v:IsA("Folder") then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.fromRGB(0,255,100)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = "Puzzle"
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("Puzzle\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end
+end)
+workspace.DescendantAdded:Connect(function(v)
+if v.Name == "Cake" then
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.fromRGB(0,255,100)
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = "Puzzle"
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("Puzzle\n(%sm)", math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end
+if v.Name == "Items" then
 local Billboard = Instance.new("BillboardGui", v)
 local TextLabel = Instance.new("TextLabel", Billboard)
 local UIStroke = Instance.new("UIStroke", TextLabel)
