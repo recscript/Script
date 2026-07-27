@@ -27,3 +27,41 @@ local Tabs = {
 Main = Window:AddTab("Main"),
 ["UI Setting"] = Window:AddTab("Config")
 }
+local Groupbox = {
+Misc = Tabs.Main:AddLeftGroupbox("Misc")
+}
+Groupbox.Misc:AddToggle("Instant Interest",{
+Text = "Instant Interest",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+spawn(function()
+while true do
+v.HoldDuration = 0
+wait()
+end
+end)
+end
+end
+InstantInterest = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") then
+spawn(function()
+while true do
+v.HoldDuration = 0
+wait()
+end
+end)
+end
+end)
+else
+InstantInterest:Disconnect()
+end
+end})
+Groupbox.Misc:AddDivider()
+Groupbox.Misc:AddDropdown("Select your items",{
+Text = "Select Your Item",
+Value = {},
+Callback = function()
+end})
