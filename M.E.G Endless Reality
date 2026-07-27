@@ -28,7 +28,8 @@ Main = Window:AddTab("Main"),
 ["UI Setting"] = Window:AddTab("Config")
 }
 local Groupbox = {
-Misc = Tabs.Main:AddLeftGroupbox("Misc")
+Misc = Tabs.Main:AddLeftGroupbox("Misc"),
+Lighting = Tabs.Main:AddRightGroupbox("Lighting")
 }
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
@@ -61,7 +62,58 @@ end
 end})
 Groupbox.Misc:AddDivider()
 Groupbox.Misc:AddDropdown("Select your items",{
-Text = "Select Your Item",
-Value = {},
-Callback = function()
+Text = "Select your item",
+Value = {"Watch", "Radio", "Compass", "Ping", "Bear Trap", "Whistle", "Entity Tracker", "Wrench", "Camera", "Candy Basket"},
+Callback = function(v)
+getgenv().syi = v
 end})
+Groupbox.Misc:AddButton({
+Text = "Get more item",
+Func = function()
+if getgenv().syi == "Watch" then
+game:GetService("ReplicatedStorage").Events.WatchEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Radio" then
+game:GetService("ReplicatedStorage").Events.RadioEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Compass" then
+game:GetService("ReplicatedStorage").Events.CompassEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Ping" then
+game:GetService("ReplicatedStorage").Events.pingEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Bear Trap" then
+game:GetService("ReplicatedStorage").Events.BearTrapEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Whistle" then
+game:GetService("ReplicatedStorage").Events.WhistleItemEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Entity Tracker" then
+game:GetService("ReplicatedStorage").Events.EntityTrackerItemEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Wrench" then
+game:GetService("ReplicatedStorage").Events.WrenchItemEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Camera" then
+game:GetService("ReplicatedStorage").Events.CemeraEvent:FireServer(game:GetService("Players").LocalPlayer)
+elseif getgenv().syi == "Candy Basket" then
+game:GetService("ReplicatedStorage").Events.CandyBasketItemEvent:FireServer(game:GetService("Players").LocalPlayer)
+end
+end})
+
+Groupbox.Lighting:AddToggle("Fullbright",{
+Text = "Fullbright",
+Default = false,
+Callback = function(v)
+_G.Fullbright = v
+spawn(function()
+while wait() do
+game.Lighting.GlobalShadows = false
+game.Lighting.Brightness = getgenv().b or 1
+end
+end)
+end}):AddColorPicker("OutdoorColor", {
+Default = Color3.fromRGB(255,255,255),
+Title = "OutdoorColor", 
+Callback = function(v)
+spawn(function()
+while wait() do
+game.Lighting.OutdoorAmbient = v
+end
+end)
+end})
+
+
+
