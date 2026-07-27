@@ -223,13 +223,13 @@ Default = false,
 Callback = function(v)
 if v then
 for _, player in ipairs(game:GetService("Players"):GetChildren()) do
-if player == game:GetService("Players").LocalPlayer then continue end
+if player == game:GetService("Players").LocalPlayer then return end
 if not player.Character:FindFirstChild("Player_ESP") then
 AddText(player.Character, player.Name, Color3.new(0,255,100), "Player_ESP")
 end
 end
-PlayersESP = game:GetService("Players").ChildAdded:Connect(function(player)
-if player == game:GetService("Players").LocalPlayer then continue end
+PlayersESP = game:GetService("Players").PlayerAdded:Connect(function(player)
+if player == game:GetService("Players").LocalPlayer then return end
 if not player.Character:FindFirstChild("Player_ESP") then
 AddText(player.Character, player.Name, Color3.new(0,255,100), "Player_ESP")
 end
@@ -237,6 +237,68 @@ end)
 else
 PlayersESP:Disconnect()
 Remove("Player_ESP")
+end
+end})
+Groupbox.ESP:AddToggle("PuzzlesESP",{
+Text = "Puzzles ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Puzzle.Puzzles:GetChildren()) do
+if not v:IsA("Folder") and not v:FindFirstChild("Puzzles_ESP") then
+AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+end
+if v:IsA("Folder") then
+for _,v2 in ipairs(v:GetChildren()) do
+if not v2:FindFirstChild("Puzzles_ESP") then
+AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+end
+end
+end
+end
+PuzzlesESP = workspace.Puzzle.Puzzles.ChildAdded:Connect(function(v)
+if not v:IsA("Folder") and not v:FindFirstChild("Puzzles_ESP") then
+AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+end
+if v:IsA("Folder") then
+for _,v2 in ipairs(v:GetChildren()) do
+if not v2:FindFirstChild("Puzzles_ESP") then
+AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+end
+end
+end
+end)
+else
+PuzzlesESP:Disconnect()
+Remove("Puzzles_ESP")
+end
+end})
+Groupbox.ESP:AddToggle("PowerBoxsESP",{
+Text = "Power Box ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace:GetChildren()) do
+if v.Name == "PowerBox" then
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "PowerBox" and not v2:FindFirstChild("PowerBox_ESP") then
+AddText(v2, "Power Box", Color3.fromRGB(255,150,50), "PowerBox_ESP")
+end
+end
+end
+end
+PowerBoxESP = workspace.ChildAdded:Connect(function(v)
+if v.Name == "PowerBox" then
+for _,v2 in ipairs(v:GetChildren()) do
+if v2.Name == "PowerBox" and not v2:FindFirstChild("PowerBox_ESP") then
+AddText(v2, "Power Box", Color3.fromRGB(255,150,50), "PowerBox_ESP")
+end
+end
+end
+end)
+else
+PowerBoxESP:Disconnect()
+Remove("PowerBox_ESP")
 end
 end})
 local Default = {
@@ -267,7 +329,7 @@ if lp then
 lp.CameraMode = "Classic"
 else
 lp.CameraMode = "LockFirstPerson"
-lp.CameraMinZoom = 0
+lp.CameraMinZoomDistance = 0
 end
 else
 lp.CameraMode = "LockFirstPerson"
