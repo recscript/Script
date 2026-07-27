@@ -142,6 +142,14 @@ end,
 Callback = function(v)
 getgenv().fv = v
 end})
+Groupbox.Camera:AddDivider()
+Groupbox.Camera:AddToggle("ThirdP",{
+Text = "Third Person",
+Default = false,
+Callback = function(v)
+getgenv().3p = v
+end})
+
 local Default = {
 Brightness = game.Lighting.Brightness,
 OutdoorAmbient = game.Lighting.OutdoorAmbient,
