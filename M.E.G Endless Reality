@@ -68,6 +68,13 @@ Lighting = Tabs.Main:AddRightGroupbox("Lighting"),
 Camera = Tabs.Main:AddLeftGroupbox("Camera"),
 ESP = Tabs.Main:AddRightGroupbox("ESP")
 }
+Groupbox.Misc:AddToggle("Auto Farm",{
+Text = "Auto Farm",
+Default = false,
+Callback = function(v)
+getgenv().af = v
+end})
+Groupbox.Misc:AddDivider()
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
 Default = false,
@@ -317,6 +324,16 @@ FogEnd = game.Lighting.FogEnd
 game:GetService("RunService").RenderStepped:Connect(function()
 local lp = game:GetService("Players").LocalPlayer
 if not lp then return end
+if getgenv().af then
+game:GetService("Players").LocalPlayer.Character.DeathEvent:FireServer()
+for _,v in ipairs(workspace.NPCS:GetChildren()) do
+if v.Name == "Ragdoll" then
+fireproximityprompt(v.HumanoidRootPart.CollectPrompt)
+wait()
+v:Destroy()
+end
+end
+end
 workspace.Camera.FieldOfView = getgenv().fv or 70
 if getgenv().f then
 game.Lighting.GlobalShadows = false
