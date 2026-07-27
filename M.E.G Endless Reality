@@ -30,7 +30,8 @@ Main = Window:AddTab("Main"),
 local Groupbox = {
 Misc = Tabs.Main:AddLeftGroupbox("Misc"),
 Lighting = Tabs.Main:AddRightGroupbox("Lighting"),
-Camera = Tabs.Main:AddLeftGroupbox("Camera")
+Camera = Tabs.Main:AddLeftGroupbox("Camera"),
+ESP = Tabs.Main:AddLeftGroupbox("ESP")
 }
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
@@ -149,7 +150,12 @@ Default = false,
 Callback = function(v)
 getgenv().3p = v
 end})
-
+Groupbox.Camera:AddToggle("InvisicamP",{
+Text = "Invisicam Person",
+Default = false,
+Callback = function(v)
+getgenv().ip = v
+end})
 local Default = {
 Brightness = game.Lighting.Brightness,
 OutdoorAmbient = game.Lighting.OutdoorAmbient,
@@ -171,4 +177,27 @@ game.Lighting.FogEnd = 9e9
 else
 game.Lighting.FogEnd = Default.FogEnd
 end
+if getgenv().3p then
+local lp = game:GetService("Players").LocalPlayer
+if not lp then return end
+if lp then
+lp.CameraMode = "Classic"
+else
+lp.CameraMode = "LockFirstPerson"
+end
+else
+lp.CameraMode = "LockFirstPerson"
+end
+if getgenv().ip then
+local lp = game:GetService("Players").LocalPlayer
+if not lp then return end
+if lp then
+lp.DevCameraOcclusionMode = "Invisicam"
+else
+lp.DevCameraOcclusionMode = "Zoom"
+end
+else
+lp.DevCameraOcclusionMode = "Zoom"
+end
 end)
+
