@@ -65,6 +65,7 @@ Groupbox.Misc:AddDivider()
 Groupbox.Misc:AddDropdown("Select your items",{
 Text = "Select your item",
 Values = {"Watch", "Radio", "Compass", "Ping", "Bear Trap", "Whistle", "Entity Tracker", "Wrench", "Camera", "Candy Basket"},
+Default = 1,
 Callback = function(v)
 getgenv().syi = v or "Watch"
 end})
