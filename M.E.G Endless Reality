@@ -29,7 +29,8 @@ Main = Window:AddTab("Main"),
 }
 local Groupbox = {
 Misc = Tabs.Main:AddLeftGroupbox("Misc"),
-Lighting = Tabs.Main:AddRightGroupbox("Lighting")
+Lighting = Tabs.Main:AddRightGroupbox("Lighting"),
+Camera = Tabs.Main:AddLeftGroupbox("Camera")
 }
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
@@ -65,7 +66,7 @@ Groupbox.Misc:AddDropdown("Select your items",{
 Text = "Select your item",
 Values = {"Watch", "Radio", "Compass", "Ping", "Bear Trap", "Whistle", "Entity Tracker", "Wrench", "Camera", "Candy Basket"},
 Callback = function(v)
-getgenv().syi = v
+getgenv().syi = v or "Watch"
 end})
 Groupbox.Misc:AddButton({
 Text = "Get more item",
@@ -97,23 +98,61 @@ Groupbox.Lighting:AddToggle("Fullbright",{
 Text = "Fullbright",
 Default = false,
 Callback = function(v)
-_G.Fullbright = v
+getgenv().f = v
 spawn(function()
-while wait() do
+while getgenv().f and wait() do
 game.Lighting.GlobalShadows = false
 game.Lighting.Brightness = getgenv().b or 1
+game.Lighting.OutdoorAmbient = getgenv().odc or Color3.fromRGB(255,255,255)
 end
 end)
 end}):AddColorPicker("OutdoorColor", {
 Default = Color3.fromRGB(255,255,255),
 Title = "OutdoorColor", 
 Callback = function(v)
+getgenv().odc = V
+end})
+Groupbox.Lighting:AddSlider("Brightness", {
+Text = "Brightness",
+Default = 1,
+Min = 0,Max = 5,
+Rounding = 1,
+Compact = false,
+FormatDisplayValue = function(s, v)
+if v == s.Max then 
+return "Max Brightness" end 
+if v == s.Min then 
+return "Lowest Brightness" end 
+end,
+Callback = function(v)
+getgenv().b = v
+end})
+Groupbox.Lighting:AddToggle("RemoveFog",{
+Text = "Remove Fog",
+Default = false,
+Callback = function(v)
+getgenv().rf = v
 spawn(function()
-while wait() do
-game.Lighting.OutdoorAmbient = v
+while getgenv().rf and wait() do
+game.Lighting.FogEnd = 9e9
 end
 end)
 end})
-
-
-
+Groupbox.Camera:AddSlider("FieldOfView", {
+Text = "FOV",
+Default = workspace.Camera.FieldOfView,
+Min = workspace.Camera.FieldOfView,Max = 120,
+Rounding = 1,
+Compact = false,
+FormatDisplayValue = function(s, v)
+if v == s.Max then 
+return "Max FOV" end 
+if v == s.Min then 
+return "Lowest FOV" end 
+end,
+Callback = function(v)
+getgenv().fv = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+workspace.Camera.FieldOfView = getgenv().fv
+end)
