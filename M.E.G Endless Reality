@@ -99,13 +99,6 @@ Text = "Fullbright",
 Default = false,
 Callback = function(v)
 getgenv().f = v
-spawn(function()
-while getgenv().f and wait() do
-game.Lighting.GlobalShadows = false
-game.Lighting.Brightness = getgenv().b or 1
-game.Lighting.OutdoorAmbient = getgenv().odc or Color3.fromRGB(255,255,255)
-end
-end)
 end}):AddColorPicker("OutdoorColor", {
 Default = Color3.fromRGB(255,255,255),
 Title = "OutdoorColor", 
@@ -132,11 +125,6 @@ Text = "Remove Fog",
 Default = false,
 Callback = function(v)
 getgenv().rf = v
-spawn(function()
-while getgenv().rf and wait() do
-game.Lighting.FogEnd = 9e9
-end
-end)
 end})
 Groupbox.Camera:AddSlider("FieldOfView", {
 Text = "FOV",
@@ -153,6 +141,25 @@ end,
 Callback = function(v)
 getgenv().fv = v
 end})
+local Default = {
+Brightness = game.Lighting.Brightness,
+OutdoorAmbient = game.Lighting.OutdoorAmbient,
+FogEnd = game.Lighting.FogEnd
+}
 game:GetService("RunService").RenderStepped:Connect(function()
-workspace.Camera.FieldOfView = getgenv().fv
+workspace.Camera.FieldOfView = getgenv().fv or 70
+if getgenv().f then
+game.Lighting.GlobalShadows = false
+game.Lighting.Brightness = getgenv().b or 1
+game.Lighting.OutdoorAmbient = getgenv().odc or Color3.fromRGB(255,255,255)
+else
+game.Lighting.GlobalShadows = false
+game.Lighting.Brightness = Default.Brightness
+game.Lighting.OutdoorAmbient = Default.OutdoorAmbient
+end
+if getgenv().rf then
+game.Lighting.FogEnd = 9e9
+else
+game.Lighting.FogEnd = Default.FogEnd
+end
 end)
