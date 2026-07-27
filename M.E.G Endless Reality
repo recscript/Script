@@ -26,6 +26,12 @@ TextLabel.Text = string.format("%s\n(%sm)", text, math.floor((game.Players.Local
 end
 end)
 end
+function Highlight(v, color, name)
+local h = Instance.new("Highlight", v)
+h.Name = name
+h.FillColor = color
+h.OutlineColor = color
+end
 function Remove(name)
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Name == name then
@@ -66,7 +72,8 @@ local Groupbox = {
 Misc = Tabs.Main:AddLeftGroupbox("Misc"),
 Lighting = Tabs.Main:AddRightGroupbox("Lighting"),
 Camera = Tabs.Main:AddLeftGroupbox("Camera"),
-ESP = Tabs.Main:AddRightGroupbox("ESP")
+ESP = Tabs.Main:AddRightGroupbox("ESP"),
+Players = Tabs.Main:AddLeftGroupbox("Players")
 }
 Groupbox.Misc:AddToggle("Auto Farm",{
 Text = "Auto Farm",
@@ -212,11 +219,13 @@ if v then
 for _,v in ipairs(workspace.NPCS:GetChildren()) do
 if not v:FindFirstChild("Monster_ESP") then
 AddText(v, v.Name, Color3.fromRGB(255,100,100), "Monster_ESP")
+Highlight(v, Color3.fromRGB(255,100,100), "Monster_ESP")
 end
 end
 MonstersESP = workspace.NPCS.ChildAdded:Connect(function(v)
 if not v:FindFirstChild("Monster_ESP") then
 AddText(v, v.Name, Color3.fromRGB(255,100,100), "Monster_ESP")
+Highlight(v, Color3.fromRGB(255,100,100), "Monster_ESP")
 end
 end)
 else
@@ -262,11 +271,13 @@ if v then
 for _,v in ipairs(workspace.Puzzle.Puzzles:GetChildren()) do
 if not v:IsA("Folder") and not v:FindFirstChild("Puzzles_ESP") then
 AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+Highlight(v, Color3.fromRGB(255,255,100), "Puzzles_ESP")
 end
 if v:IsA("Folder") then
 for _,v2 in ipairs(v:GetChildren()) do
 if not v2:FindFirstChild("Puzzles_ESP") then
-AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+AddText(v2, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+Highlight(v2, Color3.fromRGB(255,255,100), "Puzzles_ESP")
 end
 end
 end
@@ -274,11 +285,13 @@ end
 PuzzlesESP = workspace.Puzzle.Puzzles.ChildAdded:Connect(function(v)
 if not v:IsA("Folder") and not v:FindFirstChild("Puzzles_ESP") then
 AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+Highlight(v, Color3.fromRGB(255,255,100), "Puzzles_ESP")
 end
 if v:IsA("Folder") then
 for _,v2 in ipairs(v:GetChildren()) do
 if not v2:FindFirstChild("Puzzles_ESP") then
-AddText(v, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+AddText(v2, "Puzzle", Color3.fromRGB(255,255,100), "Puzzles_ESP")
+Highlight(v2, Color3.fromRGB(255,255,100), "Puzzles_ESP")
 end
 end
 end
@@ -298,6 +311,7 @@ if v.Name == "PowerBox" then
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "PowerBox" and not v2:FindFirstChild("PowerBox_ESP") then
 AddText(v2, "Power Box", Color3.fromRGB(255,150,50), "PowerBox_ESP")
+Highlight(v2, Color3.fromRGB(255,150,50), "PowerBox_ESP")
 end
 end
 end
@@ -307,6 +321,7 @@ if v.Name == "PowerBox" then
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "PowerBox" and not v2:FindFirstChild("PowerBox_ESP") then
 AddText(v2, "Power Box", Color3.fromRGB(255,150,50), "PowerBox_ESP")
+Highlight(v2, Color3.fromRGB(255,150,50), "PowerBox_ESP")
 end
 end
 end
@@ -315,6 +330,27 @@ else
 PowerBoxESP:Disconnect()
 Remove("PowerBox_ESP")
 end
+end})
+Groupbox.Players:AddSlider("Speed", {
+Text = "Speed",
+Default = 16,
+Min = 16,Max = 100,
+Rounding = 1,
+Compact = false,
+FormatDisplayValue = function(s, v)
+if v == s.Max then 
+return "Max Speed" end 
+if v == s.Min then 
+return "Low Speed" end 
+end,
+Callback = function(v)
+getgenv().s = v
+end})
+Groupbox.Players:AddToggle("Apply",{
+Text = "Aplly",
+Default = false,
+Callback = function(v)
+getgenv().as = v
 end})
 local Default = {
 Brightness = game.Lighting.Brightness,
@@ -325,14 +361,19 @@ game:GetService("RunService").RenderStepped:Connect(function()
 local lp = game:GetService("Players").LocalPlayer
 if not lp then return end
 if getgenv().af then
+if not workspace.NPCS:FindFirstChild("Ragdoll") then
 game:GetService("Players").LocalPlayer.Character.DeathEvent:FireServer()
+end
 for _,v in ipairs(workspace.NPCS:GetChildren()) do
-if v.Name == "Ragdoll" then
+if v.Name == "Ragdoll" and ((v.HumanoidRootPart.Position - lp.Character.Head.Position).Magnitude < 5 or not v.HumanoidRootPart:FindFirstChild("CollectPrompt")) then
 fireproximityprompt(v.HumanoidRootPart.CollectPrompt)
-wait()
+else
 v:Destroy()
 end
 end
+end
+if getgenv().as then
+lp.Character.Humanoid.WalkSpeed = getgenv().as or 16
 end
 workspace.Camera.FieldOfView = getgenv().fv or 70
 if getgenv().f then
