@@ -148,7 +148,7 @@ Groupbox.Camera:AddToggle("ThirdP",{
 Text = "Third Person",
 Default = false,
 Callback = function(v)
-getgenv().3p = v
+getgenv().tp = v
 end})
 Groupbox.Camera:AddToggle("InvisicamP",{
 Text = "Invisicam Person",
@@ -162,6 +162,8 @@ OutdoorAmbient = game.Lighting.OutdoorAmbient,
 FogEnd = game.Lighting.FogEnd
 }
 game:GetService("RunService").RenderStepped:Connect(function()
+local lp = game:GetService("Players").LocalPlayer
+if not lp then return end
 workspace.Camera.FieldOfView = getgenv().fv or 70
 if getgenv().f then
 game.Lighting.GlobalShadows = false
@@ -177,9 +179,7 @@ game.Lighting.FogEnd = 9e9
 else
 game.Lighting.FogEnd = Default.FogEnd
 end
-if getgenv().3p then
-local lp = game:GetService("Players").LocalPlayer
-if not lp then return end
+if getgenv().tp then
 if lp then
 lp.CameraMode = "Classic"
 else
@@ -189,8 +189,6 @@ else
 lp.CameraMode = "LockFirstPerson"
 end
 if getgenv().ip then
-local lp = game:GetService("Players").LocalPlayer
-if not lp then return end
 if lp then
 lp.DevCameraOcclusionMode = "Invisicam"
 else
