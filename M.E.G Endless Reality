@@ -65,7 +65,7 @@ Groupbox.Misc:AddDivider()
 Groupbox.Misc:AddDropdown("Select your items",{
 Text = "Select your item",
 Values = {"Watch", "Radio", "Compass", "Ping", "Bear Trap", "Whistle", "Entity Tracker", "Wrench", "Camera", "Candy Basket"},
-Default = 1,
+Default = "",
 Callback = function(v)
 getgenv().syi = v or "Watch"
 end})
@@ -104,7 +104,7 @@ end}):AddColorPicker("OutdoorColor", {
 Default = Color3.fromRGB(255,255,255),
 Title = "OutdoorColor", 
 Callback = function(v)
-getgenv().odc = V
+getgenv().odc = v
 end})
 Groupbox.Lighting:AddSlider("Brightness", {
 Text = "Brightness",
