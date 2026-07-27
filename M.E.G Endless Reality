@@ -1,3 +1,38 @@
+function AddText(v, text, color, name)
+local Billboard = Instance.new("BillboardGui", v)
+local TextLabel = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", TextLabel)
+Billboard.AlwaysOnTop = true
+Billboard.Size = UDim2.new(0,400,0,100)
+Billboard.Active = true
+Billboard.Name = name
+TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = color
+TextLabel.Font = "SourceSansBold"
+TextLabel.TextSize = 14
+TextLabel.TextTransparency = 0
+TextLabel.Visible = true
+TextLabel.Text = text
+TextLabel.Size = UDim2.new(1,0,0,0)
+TextLabel.Position = UDim2.new(0.5,0,0.7,-25)
+UIStroke.Thickness = 1
+UIStroke.Color = Color3.new()
+UIStroke.Transparency = 0
+task.spawn(function()
+while wait(0.001) do
+TextLabel.Text = string.format("%s\n(%sm)", text, math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+end
+end)
+end
+function Remove(name)
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == name then
+v:Destroy()
+end
+end
+end
 local repo = "https://raw.githubusercontent.com/recscript/LinoriaLib/main/"
 
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
@@ -31,7 +66,7 @@ local Groupbox = {
 Misc = Tabs.Main:AddLeftGroupbox("Misc"),
 Lighting = Tabs.Main:AddRightGroupbox("Lighting"),
 Camera = Tabs.Main:AddLeftGroupbox("Camera"),
-ESP = Tabs.Main:AddLeftGroupbox("ESP")
+ESP = Tabs.Main:AddRightGroupbox("ESP")
 }
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
@@ -156,6 +191,54 @@ Default = false,
 Callback = function(v)
 getgenv().ip = v
 end})
+Groupbox.Camera:AddToggle("NoCameraVignette",{
+Text = "No Camera Vignette",
+Default = false,
+Callback = function(v)
+getgenv().ncv = v
+end})
+Groupbox.ESP:AddToggle("MonstersESP",{
+Text = "Monsters ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.NPCS:GetChildren()) do
+if not v:FindFirstChild("Monster_ESP") then
+AddText(v, v.Name, Color3.fromRGB(255,100,100), "Monster_ESP")
+end
+end
+MonstersESP = workspace.NPCS.ChildAdded:Connect(function(v)
+if not v:FindFirstChild("Monster_ESP") then
+AddText(v, v.Name, Color3.fromRGB(255,100,100), "Monster_ESP")
+end
+end)
+else
+MonstersESP:Disconnect()
+Remove("Monster_ESP")
+end
+end})
+Groupbox.ESP:AddToggle("PlayersESP",{
+Text = "Players ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _, player in ipairs(game:GetService("Players"):GetChildren()) do
+if player == game:GetService("Players").LocalPlayer then continue end
+if not player.Character:FindFirstChild("Player_ESP") then
+AddText(player.Character, player.Name, Color3.new(0,255,100), "Player_ESP")
+end
+end
+PlayersESP = game:GetService("Players").ChildAdded:Connect(function(player)
+if player == game:GetService("Players").LocalPlayer then continue end
+if not player.Character:FindFirstChild("Player_ESP") then
+AddText(player.Character, player.Name, Color3.new(0,255,100), "Player_ESP")
+end
+end)
+else
+PlayersESP:Disconnect()
+Remove("Player_ESP")
+end
+end})
 local Default = {
 Brightness = game.Lighting.Brightness,
 OutdoorAmbient = game.Lighting.OutdoorAmbient,
@@ -184,6 +267,7 @@ if lp then
 lp.CameraMode = "Classic"
 else
 lp.CameraMode = "LockFirstPerson"
+lp.CameraMinZoom = 0
 end
 else
 lp.CameraMode = "LockFirstPerson"
@@ -197,5 +281,6 @@ end
 else
 lp.DevCameraOcclusionMode = "Zoom"
 end
+lp.PlayerGui.MainGUI.Vignette.Visible = not getgenv().ncv
 end)
 
