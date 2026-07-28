@@ -138,29 +138,13 @@ end)
 RunService.RenderStepped:Connect(function()
     local char = LP.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-    
     char.Humanoid.WalkSpeed = _G.Speed or 18.5
-
-for _,v in ipairs(workspace:GetChildren()) do
-if v:IsA("Model") and v:GetAttribute("MapID") then
-for _,v2 in ipairs(v:GetChildren()) do
-if v2.Name == "CoinContainer" then
-for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Coin_Server" and v3.Transparency ~= 1 then
-v3.Size = Vector3.new(15,v3.Size.Y + 1, 15)
-v3.CanCollide = false
-end
-end
-end
-end
-end
-end
     local tool = char:FindFirstChildOfClass("Tool")
     if tool then
         if tool.Name == "Gun" and Roles.Murderer and Roles.Murderer.Character then
             local mRoot = Roles.Murderer.Character:FindFirstChild("Head")
             if mRoot then
-                tool.Shoot:FireServer(tool.Handle.CFrame, mRoot.CFrame)
+                workspace.Camera.CFrame = CFrame.lookAt(workspace.Camera.CFrame.Position, mRoot.Position)
             end
         elseif tool.Name == "Knife" and tool:FindFirstChild("Stab") then
             tool:FindFirstChild("Stab"):FireServer("Slash")
