@@ -146,8 +146,8 @@ if v:IsA("Model") and v:GetAttribute("MapID") then
 for _,v2 in ipairs(v:GetChildren()) do
 if v2.Name == "CoinContainer" then
 for _,v3 in ipairs(v2:GetChildren()) do
-if v3.Name == "Coin_Server" and v3.Transparency == 0 then
-v3.Size = Vector3.new(15,v3.Position.Y + 1, 15)
+if v3.Name == "Coin_Server" and v3.Transparency ~= 1 then
+v3.Size = Vector3.new(15,v3.Size.Y + 1, 15)
 v3.CanCollide = false
 end
 end
