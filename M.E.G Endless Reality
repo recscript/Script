@@ -76,12 +76,25 @@ ESP = Tabs.Main:AddRightGroupbox("ESP"),
 Players = Tabs.Main:AddLeftGroupbox("Players"),
 Auto = Tabs.Main:AddRightGroupbox("Auto")
 }
-Groupbox.Misc:AddToggle("Auto Farm",{
-Text = "Auto Farm",
+if getgenv().farm then
+Groupbox.Misc:AddToggle("Auto Ragdoll",{
+Text = "Auto Ragdoll Collect",
 Default = false,
 Callback = function(v)
-getgenv().af = v
+getgenv().arc = v
 end})
+Groupbox.Misc:AddButton({
+Text = "Add Death",
+Func = function()
+game:GetService("Players").LocalPlayer.Character.DeathEvent:FireServer()
+wait(0.5)
+for _,v in ipairs(workspace.NPCS:GetChildren()) do
+if v.Name == "Ragdoll" then
+fireproximityprompt(v.HumanoidRootPart.CollectPrompt)
+end
+end
+end})
+end
 Groupbox.Misc:AddDivider()
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
@@ -245,13 +258,13 @@ Default = false,
 Callback = function(v)
 if v then
 for _, player in ipairs(workspace:GetChildren()) do
-if player:IsA("Model") and player:FindFirstChild("Humanoid") and player.Name ~= lp and not player:FindFirstChild("Player_ESP") then
+if player:IsA("Model") and player:FindFirstChild("Humanoid") and not player.Name == lp.Name and not player:FindFirstChild("Player_ESP") then
 AddText(player, player.Name, Color3.new(0,255,100), "Player_ESP")
 Highlight(v, getgenv().plrec or Color3.fromRGB(0,255,100), "Player_ESP")
 end
 end
 PlayersESP = workspace.ChildAdded:Connect(function(player)
-if player:IsA("Model") and player:FindFirstChild("Humanoid") and player.Name ~= lp and not player:FindFirstChild("Player_ESP") then
+if player:IsA("Model") and player:FindFirstChild("Humanoid") and not player.Name == lp.Name and not player:FindFirstChild("Player_ESP") then
 AddText(player, player.Name, Color3.new(0,255,100), "Player_ESP")
 Highlight(v, getgenv().plrec or Color3.fromRGB(0,255,100), "Player_ESP")
 end
@@ -463,15 +476,10 @@ FogEnd = game.Lighting.FogEnd
 game:GetService("RunService").RenderStepped:Connect(function()
 local lp = game:GetService("Players").LocalPlayer
 if not lp then return end
-if getgenv().af then
-if not workspace.NPCS:FindFirstChild("Ragdoll") then
-game:GetService("Players").LocalPlayer.Character.DeathEvent:FireServer()
-end
+if getgenv().arc then
 for _,v in ipairs(workspace.NPCS:GetChildren()) do
-if v.Name == "Ragdoll" and ((v.HumanoidRootPart.Position - lp.Character.Head.Position).Magnitude < 5 or not v.HumanoidRootPart:FindFirstChild("CollectPrompt")) then
+if v.Name == "Ragdoll" then
 fireproximityprompt(v.HumanoidRootPart.CollectPrompt)
-else
-v:Destroy()
 end
 end
 end
@@ -479,7 +487,7 @@ if getgenv().apq then
 game:GetService("ReplicatedStorage").Events.GradeStuff:FireServer({})
 end
 if getgenv().nc then
-for _, part in pairs(lp.Character:GetChildren()) do
+for _, part in pairs(lp.Character:GetDescendants()) do
 if part:IsA("BasePart") or part:IsA("MeshPart") then
 part.CanCollide = false
 end
