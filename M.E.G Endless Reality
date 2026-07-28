@@ -83,6 +83,45 @@ Default = false,
 Callback = function(v)
 getgenv().arc = v
 end})
+Groupbox.Misc:AddToggle("AlwaysRemoveRagdoll",{
+Text = "Always Remove Ragdoll",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.NPCS:GetChildren()) do
+if v.Name == "Ragdoll" then
+for _,v2 in ipairs(v:GeChildren()) do
+if v2:IsA("BasePart") then
+v.Transparency = 1
+v.CanCollide = false
+end
+end
+end
+end
+arr = workspace.NPCS.ChildAdded:Connect(function(v)
+if v.Name == "Ragdoll" then
+for _,v2 in ipairs(v:GeChildren()) do
+if v2:IsA("BasePart") then
+v.Transparency = 1
+v.CanCollide = false
+end
+end
+end
+end)
+else
+arr:Disconnect()
+for _,v in ipairs(workspace.NPCS:GetChildren()) do
+if v.Name == "Ragdoll" then
+for _,v2 in ipairs(v:GeChildren()) do
+if v2:IsA("BasePart") then
+v.Transparency = 0
+v.CanCollide = true
+end
+end
+end
+end
+end
+end})
 Groupbox.Misc:AddButton({
 Text = "Add Death",
 Func = function()
