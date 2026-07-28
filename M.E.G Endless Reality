@@ -22,7 +22,7 @@ UIStroke.Color = Color3.new()
 UIStroke.Transparency = 0
 task.spawn(function()
 while wait(0.001) do
-TextLabel.Text = string.format("%s\n(%sm)", text, math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
+TextLabel.Text = string.format("%s\n[%sm]", text, math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - v:GetPivot().Position).Magnitude))
 end
 end)
 end
