@@ -94,8 +94,8 @@ fireproximityprompt(v.HumanoidRootPart.CollectPrompt)
 end
 end
 end})
-end
 Groupbox.Misc:AddDivider()
+end
 Groupbox.Misc:AddToggle("Instant Interest",{
 Text = "Instant Interest",
 Default = false,
@@ -252,6 +252,7 @@ Title = "MonstersColor",
 Callback = function(v)
 getgenv().mec = v
 end})
+--[[
 Groupbox.ESP:AddToggle("PlayersESP",{
 Text = "Players ESP",
 Default = false,
@@ -278,7 +279,7 @@ Default = Color3.fromRGB(0,255,100),
 Title = "PlayersColor", 
 Callback = function(v)
 getgenv().plrec = v
-end})
+end})]]--
 Groupbox.ESP:AddToggle("PuzzlesESP",{
 Text = "Puzzles ESP",
 Default = false,
