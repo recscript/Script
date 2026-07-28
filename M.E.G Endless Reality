@@ -92,8 +92,8 @@ for _,v in ipairs(workspace.NPCS:GetChildren()) do
 if v.Name == "Ragdoll" then
 for _,v2 in ipairs(v:GeChildren()) do
 if v2:IsA("BasePart") then
-v.Transparency = 1
-v.CanCollide = false
+v2.Transparency = 1
+v2.CanCollide = false
 end
 end
 end
@@ -102,8 +102,8 @@ arr = workspace.NPCS.ChildAdded:Connect(function(v)
 if v.Name == "Ragdoll" then
 for _,v2 in ipairs(v:GeChildren()) do
 if v2:IsA("BasePart") then
-v.Transparency = 1
-v.CanCollide = false
+v2.Transparency = 1
+v2.CanCollide = false
 end
 end
 end
@@ -114,8 +114,8 @@ for _,v in ipairs(workspace.NPCS:GetChildren()) do
 if v.Name == "Ragdoll" then
 for _,v2 in ipairs(v:GeChildren()) do
 if v2:IsA("BasePart") then
-v.Transparency = 0
-v.CanCollide = true
+v2.Transparency = 0
+v2.CanCollide = true
 end
 end
 end
@@ -132,6 +132,13 @@ if v.Name == "Ragdoll" then
 fireproximityprompt(v.HumanoidRootPart.CollectPrompt)
 end
 end
+end})
+Groupbox.Misc:AddButton({
+Text = "Revive",
+Func = function()
+game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 0
+wait(4)
+game:GetService("Players").LocalPlayer.PlayerGui.Loading.Enabled = false
 end})
 Groupbox.Misc:AddDivider()
 end
