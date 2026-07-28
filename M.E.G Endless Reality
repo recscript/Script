@@ -244,30 +244,27 @@ Text = "Players ESP",
 Default = false,
 Callback = function(v)
 if v then
-for _, player in ipairs(game:GetService("Players"):GetChildren()) do
-if not player.Character:FindFirstChild("Player_ESP") then
-AddText(player.Character, player.Name, Color3.new(0,255,100), "Player_ESP")
-if player.Name == game.Players.LocalPlayer.Name then
-if game.Players.LocalPlayer.Character:FindFirstChild("Player_ESP") then
-game.Players.LocalPlayer.Character:FindFirstChild("Player_ESP"):Destrot()
+for _, player in ipairs(workspace:GetChildren()) do
+if player:IsA("Model") and player:FindFirstChild("Humanoid") and player.Name ~= lp and not player:FindFirstChild("Player_ESP") then
+AddText(player, player.Name, Color3.new(0,255,100), "Player_ESP")
+Highlight(v, getgenv().plrec or Color3.fromRGB(0,255,100), "Player_ESP")
 end
 end
-end
-end
-PlayersESP = game:GetService("Players").PlayerAdded:Connect(function(player)
-if not player.Character:FindFirstChild("Player_ESP") then
-AddText(player.Character, player.Name, Color3.new(0,255,100), "Player_ESP")
-if player.Name == game.Players.LocalPlayer.Name then
-if game.Players.LocalPlayer.Character:FindFirstChild("Player_ESP") then
-game.Players.LocalPlayer.Character:FindFirstChild("Player_ESP"):Destrot()
-end
-end
+PlayersESP = workspace.ChildAdded:Connect(function(player)
+if player:IsA("Model") and player:FindFirstChild("Humanoid") and player.Name ~= lp and not player:FindFirstChild("Player_ESP") then
+AddText(player, player.Name, Color3.new(0,255,100), "Player_ESP")
+Highlight(v, getgenv().plrec or Color3.fromRGB(0,255,100), "Player_ESP")
 end
 end)
 else
 PlayersESP:Disconnect()
 Remove("Player_ESP")
 end
+end}):AddColorPicker("PlayersColor", {
+Default = Color3.fromRGB(0,255,100),
+Title = "PlayersColor", 
+Callback = function(v)
+getgenv().plrec = v
 end})
 Groupbox.ESP:AddToggle("PuzzlesESP",{
 Text = "Puzzles ESP",
@@ -512,9 +509,8 @@ end
 if getgenv().atzq then
 for _,v in ipairs(workspace.Puzzle.Puzzles:GetChildren()) do
 if v.Name == "Item" and v:FindFirstChild("CoolGlowpoint") then
-firetouchinterest(lp.Character.HumanoidRootPart, v.TouchInterest, 0)
-wait()
-firetouchinterest(lp.Character.HumanoidRootPart, v.TouchInterest, 1)
+firetouchinterest(v.CoolGlowpoint, v.TouchInterest, 0)
+firetouchinterest(v.CoolGlowpoint, v.TouchInterest, 1)
 end
 end
 end
